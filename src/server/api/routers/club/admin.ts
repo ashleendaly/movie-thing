@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
-import { generateJoinCode } from "~/utils/generateJoinCode";
+import { v4 as uuidv4 } from "uuid";
 
 export const adminRouter = createTRPCRouter({
   create: protectedProcedure
@@ -19,7 +19,7 @@ export const adminRouter = createTRPCRouter({
           name: newClub.name,
           sessionActive: false,
           joinable: true,
-          joinCode: generateJoinCode(),
+          joinCode: uuidv4(),
         })
         .returningAll()
         .executeTakeFirstOrThrow();
@@ -63,6 +63,20 @@ export const adminRouter = createTRPCRouter({
         .updateTable("Club")
         .set({
           sessionActive: true,
+        })
+        .where("ID", "==", clubID)
+        .returningAll()
+        .executeTakeFirstOrThrow();
+    }),
+
+  resetJoinCode: protectedProcedure
+    .input(z.object({ clubID: z.string() }))
+    .mutation(async ({ input: { clubID }, ctx }) => {
+      // TODO check if user has permission
+      return await ctx.db
+        .updateTable("Club")
+        .set({
+          joinCode: uuidv4(),
         })
         .where("ID", "==", clubID)
         .returningAll()
