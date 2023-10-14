@@ -6,11 +6,13 @@ import { api } from "~/utils/api";
 
 import { ThemeProvider } from "~/components/theme-provider";
 import "~/styles/globals.css";
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
+  const omdbQueryClient = new QueryClient()
   return (
     <SessionProvider session={session}>
       <ThemeProvider
@@ -19,7 +21,9 @@ const MyApp: AppType<{ session: Session | null }> = ({
         enableSystem
         disableTransitionOnChange
       >
-        <Component {...pageProps} />
+        <QueryClientProvider client={omdbQueryClient}>
+          <Component {...pageProps} />
+        </QueryClientProvider>
       </ThemeProvider>
     </SessionProvider>
   );

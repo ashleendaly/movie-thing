@@ -1,11 +1,17 @@
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
+import axios, { AxiosResponse } from "axios"
 import { api } from "~/utils/api";
+import { env } from "~/env.mjs";
 
 export default function Home() {
   const {data: sessionData} = useSession()
   const {data: secretMessage} = api.example.getSecretMessage.useQuery(undefined, {enabled: sessionData?.user !== undefined})
 
+  const omdbClient = useQueryClient()
+  const { data } = omdbClient.useQuery({queryKey: ['getGuardians'], queryFn: () => axios.get(`http://www.omdbapi.com/?i=tt3896198&apikey=${env.NEXT_PUBLIC_OMDB_KEY}`).then((res) => res.data ).catch((error) => console.log(error)) })
+  
   return (
     <>
       <Head>
@@ -25,6 +31,9 @@ export default function Home() {
             >
             {sessionData ? "Sign out" : "Sign in"}
             </button>
+          </div>
+          <div>
+            {data?.title}
           </div>
         </div>
       </main>
