@@ -32,7 +32,6 @@ model WantsToWatch {
     preference Int
     userID     String
     movieID    String
-    userId     String
 
     @@id([userID, movieID])
     @@unique([userID, preference])
