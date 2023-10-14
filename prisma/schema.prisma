@@ -6,9 +6,8 @@ generator kysely {
 
     // Optionally provide a destination directory for the generated file
     // and a filename of your choice
-    output      = "../node_modules/@kysely/client"
-    fileName    = "index.ts"
-    readOnlyIds = true
+    output   = "../node_modules/@kysely/client"
+    fileName = "index.ts"
 }
 
 datasource db {
@@ -21,7 +20,10 @@ datasource db {
 }
 
 model Movie {
-    ID           String         @id @default(cuid())
+    ID        String @id @default(cuid())
+    title     String
+    posterURL String
+
     wantsToWatch WantsToWatch[]
 }
 
@@ -34,5 +36,21 @@ model WantsToWatch {
 
     @@id([userID, movieID])
     @@unique([userID, preference])
-    @@map("wantsToWatch")
+}
+
+model Club {
+    ID             String           @id @default(cuid())
+    ClubMembership ClubMembership[]
+    name           String
+    sessionActive  Boolean
+    joinCode       String
+    joinable       Boolean
+}
+
+model ClubMembership {
+    club   Club   @relation(fields: [clubID], references: [ID])
+    userID String
+    clubID String
+
+    @@id([userID, clubID])
 }
