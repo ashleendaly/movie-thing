@@ -1,22 +1,19 @@
-import { KyselyAuth, type Codegen } from "@auth/kysely-adapter";
 import { type DB } from "@kysely/client";
-import { PostgresDialect } from "kysely";
+import { PostgresDialect, Kysely } from "kysely";
 import { Pool } from "pg";
 import { env } from "~/env.mjs";
 
 const globalForKysely = globalThis as unknown as {
-  kysely: KyselyAuth<DB, Codegen> | undefined;
+  kysely: Kysely<DB> | undefined;
 };
 
 export const db =
   globalForKysely.kysely ??
-  new KyselyAuth<DB, Codegen>({
+  new Kysely<DB>({
     dialect: new PostgresDialect({
-      // TODO work out why this is broken
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
       pool: new Pool({
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         connectionString: env.POSTGRES_URL,
+        ssl: true,
         max: 10,
       }),
     }),
