@@ -13,8 +13,9 @@ export const db =
   new KyselyAuth<DB, Codegen>({
     dialect: new PostgresDialect({
       // TODO work out why this is broken
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
       pool: new Pool({
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         connectionString: env.POSTGRES_URL,
         max: 10,
       }),
