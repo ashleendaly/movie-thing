@@ -48,9 +48,10 @@ model Club {
 }
 
 model ClubMembership {
-    club   Club   @relation(fields: [clubID], references: [ID])
-    userID String
-    clubID String
+    club      Club    @relation(fields: [clubID], references: [ID])
+    userID    String
+    clubID    String
+    isPresent Boolean
 
     @@id([userID, clubID])
 }
