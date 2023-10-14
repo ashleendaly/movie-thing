@@ -1,22 +1,7 @@
 import { UserButton } from "@clerk/nextjs";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import Head from "next/head";
-import { env } from "~/env.mjs";
-import { type SearchResponse } from "~/types/omdb";
 
 export default function Home() {
-  const { data } = useQuery({
-    queryKey: ["searchMovies"],
-    queryFn: () =>
-      axios
-        .get<SearchResponse>(
-          `http://www.omdbapi.com/?i=tt3896198&apikey=${env.NEXT_PUBLIC_OMDB_KEY}&s=avatar`,
-        )
-        .then((res) => res.data.Search)
-        .catch((error) => console.log(error)),
-  });
-
   return (
     <>
       <Head>
@@ -27,7 +12,6 @@ export default function Home() {
       <main>
         <div>
           <UserButton />
-          {data?.map((movie) => <div key={movie.imdbID}>{movie.Title}</div>)}
         </div>
       </main>
     </>
