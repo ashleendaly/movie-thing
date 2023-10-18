@@ -13,7 +13,6 @@ export const clubRouter = createTRPCRouter({
 
   getForUser: protectedProcedure.query(async ({ ctx }) => {
     const userID = ctx.auth.userId;
-    console.log(userID);
     return await ctx.db
       .selectFrom("Club")
       .innerJoin("ClubMembership", "Club.ID", "ClubMembership.clubID")
