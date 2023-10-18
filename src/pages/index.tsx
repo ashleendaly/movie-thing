@@ -1,16 +1,15 @@
 import Head from "next/head";
 import Link from "next/link";
+import toast from "react-hot-toast";
 import { AddClubButton } from "~/components/add-club-button";
 import { Divider } from "~/components/divider";
 import { Button } from "~/components/ui/button";
+import { api } from "~/utils/api";
 import { slugify } from "~/utils/slugify";
 
 export default function Home() {
-  const userClubs = [
-    { name: "Club 1" },
-    { name: "Club 2" },
-    { name: "Club 3" },
-  ];
+  const { data: userClubs, status, error } = api.club.getForUser.useQuery();
+
   return (
     <>
       <Head>
@@ -20,12 +19,8 @@ export default function Home() {
       </Head>
       <div className="grid place-items-center pt-40">
         <div className="flex w-full max-w-2xl flex-col gap-4 px-10">
-          <AddClubButton
-            handleCreate={() => {
-              return;
-            }}
-          />
-          {userClubs.length !== 0 && (
+          <AddClubButton />
+          {status === "success" && userClubs.length !== 0 && (
             <>
               <Divider label="or" />
               {userClubs.map((club, i) => (
