@@ -19,10 +19,10 @@ export function AddClubButton() {
               <TabsTrigger value="join">join</TabsTrigger>
               <TabsTrigger value="create">create</TabsTrigger>
             </TabsList>
-            <TabsContent value="join">
+            <TabsContent value="join" tabIndex={-1}>
               <JoinClub />
             </TabsContent>
-            <TabsContent value="create">
+            <TabsContent value="create" tabIndex={-1}>
               <CreateClub />
             </TabsContent>
           </Tabs>

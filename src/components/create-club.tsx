@@ -6,28 +6,43 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { api } from "~/utils/api";
 import toast from "react-hot-toast";
+import { useRouter } from "next/router";
+import { slugify } from "~/utils/slugify";
+import { useEffect } from "react";
 
 const clubCreationSchema = z.object({
-  clubName: z.string().min(2),
+  clubName: z.string().regex(/^\w[\w-]*\w$/, "Invalid club name"),
 });
 
 export function CreateClub() {
   const { mutateAsync: createClubAsync } = api.club.admin.create.useMutation();
-
+  const router = useRouter();
   type formData = z.infer<typeof clubCreationSchema>;
 
-  const { register, handleSubmit, reset } = useForm<formData>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<formData>({
     resolver: zodResolver(clubCreationSchema),
   });
 
-  const onSubmit = handleSubmit(async ({ clubName }) => {
-    await toast.promise(createClubAsync({ name: clubName }), {
-      success: "Success!",
-      loading: "Loading...",
-      error: (err) => err.toString(),
-    });
-    reset();
+  const onSubmit = handleSubmit(({ clubName }) => {
+    void toast.promise(
+      createClubAsync({ name: clubName }).then(({ name }) =>
+        router.push(`/club/${slugify(name)}`),
+      ),
+      {
+        success: "Success!",
+        loading: "Loading...",
+        error: "Oops this name is taken",
+      },
+    );
   });
+
+  useEffect(() => {
+    if (errors.clubName?.message) toast.error(errors.clubName.message);
+  }, [errors]);
 
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-5 py-10">

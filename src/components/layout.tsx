@@ -5,9 +5,9 @@ import { Header } from "./header";
 
 export function Layout({ children }: { children: ReactNode }) {
   return (
-    <main className="h-[100dvh] bg-background">
+    <main className="h-[100dvh] bg-background py-[10dvh]">
       <Header />
-      {children}
+      <section className=" h-[80dvh]">{children}</section>
       <Navbar />
     </main>
   );
