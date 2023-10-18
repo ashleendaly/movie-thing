@@ -101,4 +101,27 @@ export const adminRouter = createTRPCRouter({
         .returningAll()
         .executeTakeFirstOrThrow();
     }),
+
+  join: protectedProcedure
+    .input(z.object({ joinCode: z.string() }))
+    .mutation(async ({ ctx, input: { joinCode } }) => {
+      // find club
+      const clubID = (
+        await ctx.db
+          .selectFrom("Club")
+          .select(["Club.ID"])
+          .where("Club.joinCode", "=", joinCode)
+          .executeTakeFirstOrThrow()
+      ).ID;
+
+      return await ctx.db
+        .insertInto("ClubMembership")
+        .values({
+          clubID,
+          isPresent: false,
+          userID: ctx.auth.userId,
+        })
+        .returningAll()
+        .executeTakeFirstOrThrow();
+    }),
 });
