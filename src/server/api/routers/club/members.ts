@@ -19,6 +19,15 @@ export const memberRouter = createTRPCRouter({
         .where("joinCode", "=", joinCode)
         .executeTakeFirstOrThrow();
 
+      const membership = await ctx.db
+        .selectFrom("ClubMembership")
+        .where("ClubMembership.clubID", "=", club.ID)
+        .where("ClubMembership.userID", "=", userID)
+        .select("ClubMembership.clubID")
+        .executeTakeFirst();
+
+      if (membership?.clubID) return club;
+
       if (!club.joinable) {
         throw new Error("club is not joinable");
       }
