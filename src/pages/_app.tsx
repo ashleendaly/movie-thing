@@ -6,9 +6,11 @@ import { ThemeProvider } from "~/components/theme-provider";
 import "~/styles/globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import { Layout } from "~/components/layout";
+import { Toaster } from "react-hot-toast";
 
 const MyApp: AppType = ({ Component, pageProps: { ...pageProps } }) => {
-  const omdbQueryClient = new QueryClient()
+  const omdbQueryClient = new QueryClient();
   return (
     <ClerkProvider>
       <ThemeProvider
@@ -18,7 +20,10 @@ const MyApp: AppType = ({ Component, pageProps: { ...pageProps } }) => {
         disableTransitionOnChange
       >
         <QueryClientProvider client={omdbQueryClient}>
-          <Component {...pageProps} />
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+          <Toaster />
         </QueryClientProvider>
       </ThemeProvider>
     </ClerkProvider>
