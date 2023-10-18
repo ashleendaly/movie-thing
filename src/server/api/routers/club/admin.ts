@@ -1,7 +1,8 @@
 import { z } from "zod";
 
-import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import { TRPCError } from "@trpc/server";
 import { v4 as uuidv4 } from "uuid";
+import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
 export const adminRouter = createTRPCRouter({
   create: protectedProcedure
@@ -106,18 +107,22 @@ export const adminRouter = createTRPCRouter({
     .input(z.object({ joinCode: z.string() }))
     .mutation(async ({ ctx, input: { joinCode } }) => {
       // find club
-      const clubID = (
-        await ctx.db
-          .selectFrom("Club")
-          .select(["Club.ID"])
-          .where("Club.joinCode", "=", joinCode)
-          .executeTakeFirstOrThrow()
-      ).ID;
+      const { ID, joinable } = await ctx.db
+        .selectFrom("Club")
+        .select(["Club.ID", "Club.joinable"])
+        .where("Club.joinCode", "=", joinCode)
+        .executeTakeFirstOrThrow();
+
+      if (!joinable)
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "Club is not joinable",
+        });
 
       return await ctx.db
         .insertInto("ClubMembership")
         .values({
-          clubID,
+          clubID: ID,
           isPresent: false,
           userID: ctx.auth.userId,
         })
