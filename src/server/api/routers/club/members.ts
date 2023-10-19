@@ -1,4 +1,5 @@
 import { clerkClient } from "@clerk/nextjs";
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
@@ -29,7 +30,10 @@ export const memberRouter = createTRPCRouter({
       if (membership?.clubID) return club;
 
       if (!club.joinable) {
-        throw new Error("club is not joinable");
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "Club is not joinable",
+        });
       }
 
       await ctx.db
