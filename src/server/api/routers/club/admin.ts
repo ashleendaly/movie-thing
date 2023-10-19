@@ -1,7 +1,7 @@
 import { z } from "zod";
-
+import { generate } from "random-words";
 import { TRPCError } from "@trpc/server";
-import { v4 as uuidv4 } from "uuid";
+
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
 export const adminRouter = createTRPCRouter({
@@ -20,7 +20,13 @@ export const adminRouter = createTRPCRouter({
           name: newClub.name,
           sessionActive: false,
           joinable: true,
-          joinCode: uuidv4(),
+          joinCode: generate({
+            exactly: 1,
+            wordsPerString: 4,
+            minLength: 4,
+            maxLength: 4,
+            separator: "-",
+          }).at(0)!,
         })
         .returningAll()
         .executeTakeFirstOrThrow();
@@ -77,7 +83,13 @@ export const adminRouter = createTRPCRouter({
       return await ctx.db
         .updateTable("Club")
         .set({
-          joinCode: uuidv4(),
+          joinCode: generate({
+            exactly: 1,
+            wordsPerString: 4,
+            minLength: 4,
+            maxLength: 4,
+            separator: "-",
+          }).at(0)!,
         })
         .where("ID", "==", clubID)
         .returningAll()
