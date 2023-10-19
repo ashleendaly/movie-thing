@@ -6,7 +6,6 @@ import { cn } from "~/utils/cn";
 export function Navbar() {
   const router = useRouter();
   const path = router.pathname;
-  console.log(path);
   return (
     <nav className="fixed bottom-0 flex h-[10dvh] w-full items-center justify-around bg-background">
       <Link href="/">

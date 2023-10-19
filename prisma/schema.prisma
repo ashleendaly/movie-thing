@@ -21,7 +21,7 @@ datasource db {
 }
 
 model Movie {
-    ID        String @id @default(dbgenerated("(uuid())"))
+    ID        String @id @default(dbgenerated("(gen_random_uuid())"))
     title     String
     posterURL String
 
@@ -39,10 +39,10 @@ model WantsToWatch {
 }
 
 model Club {
-    ID             String           @id @default(dbgenerated("(uuid())"))
+    ID             String           @id @default(dbgenerated("(gen_random_uuid())"))
     name           String           @unique
     sessionActive  Boolean
-    joinCode       String
+    joinCode       String           @unique
     joinable       Boolean
     ClubMembership ClubMembership[]
 }

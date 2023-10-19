@@ -33,6 +33,9 @@ export default {
 
         ring: "hsl(var(--ring) / <alpha-value>)",
       },
+      animation: {
+        "spin-slow": "spin 2s linear infinite",
+      },
     },
   },
   plugins: [],
