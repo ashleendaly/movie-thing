@@ -8,7 +8,7 @@ import { api } from "~/utils/api";
 import { slugify } from "~/utils/slugify";
 
 export default function Home() {
-  const { data: userClubs, status, error } = api.club.getForUser.useQuery();
+  const { data: userClubs, status, error } = api.club.getAllForUser.useQuery();
 
   return (
     <>

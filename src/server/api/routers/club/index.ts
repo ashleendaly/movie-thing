@@ -11,7 +11,7 @@ export const clubRouter = createTRPCRouter({
   admin: adminRouter,
   members: memberRouter,
 
-  getForUser: protectedProcedure.query(async ({ ctx }) => {
+  getAllForUser: protectedProcedure.query(async ({ ctx }) => {
     const userID = ctx.auth.userId;
     return await ctx.db
       .selectFrom("Club")
