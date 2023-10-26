@@ -9,7 +9,7 @@ export function AddClubButton() {
     <Dialog>
       <DialogTrigger asChild>
         <Button className="h-16 w-full" size="lg">
-          add
+          add a club
         </Button>
       </DialogTrigger>
       <DialogContent className="h-[70dvh]">
