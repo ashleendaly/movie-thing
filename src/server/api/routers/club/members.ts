@@ -6,11 +6,7 @@ import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
 export const memberRouter = createTRPCRouter({
   join: protectedProcedure
-    .input(
-      z.object({
-        joinCode: z.string(),
-      }),
-    )
+    .input(z.object({ joinCode: z.string() }))
     .mutation(async ({ input: { joinCode }, ctx }) => {
       const userID = ctx.auth.userId;
 
