@@ -1,14 +1,13 @@
 import Head from "next/head";
 import Link from "next/link";
-import toast from "react-hot-toast";
-import { AddClubButton } from "~/components/add-club-button";
+import { AddClubButton } from "~/components/home/add-club-button";
 import { Divider } from "~/components/divider";
 import { Button } from "~/components/ui/button";
 import { api } from "~/utils/api";
 import { slugify } from "~/utils/slugify";
 
 export default function Home() {
-  const { data: userClubs, status, error } = api.club.getAllForUser.useQuery();
+  const { data: userClubs, status } = api.club.getAllForUser.useQuery();
 
   return (
     <>

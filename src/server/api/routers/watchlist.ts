@@ -14,50 +14,36 @@ export const watchlistRouter = createTRPCRouter({
     .mutation(async ({ input: newMovie, ctx }) => {
       const userID = ctx.auth.userId;
 
-      let movieRecord = await ctx.db
-        .selectFrom("Movie")
-        .selectAll()
-        .where("Movie.ID", "==", newMovie.ID)
-        .executeTakeFirst();
-
-      if (!movieRecord) {
-        movieRecord = await ctx.db
-          .insertInto("Movie")
-          .values(newMovie)
-          .returningAll()
-          .executeTakeFirstOrThrow();
-      }
-
-      const count =
-        (
-          await ctx.db
-            .selectFrom("WantsToWatch")
-            .select((eb) => [eb.fn.countAll<number>().as("count")]) //i.e. COUNT(*) as count
-            .where("userID", "==", userID)
-            .executeTakeFirst()
-        )?.count ?? 0;
+      const movieRecord = await ctx.db
+        .insertInto("Movie")
+        .values(newMovie)
+        .onConflict((oc) => oc.doNothing())
+        .returningAll()
+        .executeTakeFirstOrThrow();
 
       return await ctx.db
         .insertInto("WantsToWatch")
-        .values({
+        .values((eb) => ({
           movieID: movieRecord.ID,
           userID,
-          preference: count,
-        })
+          preference: eb
+            .selectFrom("WantsToWatch")
+            .select((eb) =>
+              eb(eb.fn.max("preference"), "+", 1).as("preference"),
+            )
+            .where("userID", "=", userID),
+        }))
         .returningAll()
         .executeTakeFirstOrThrow();
     }),
 
-  remove: protectedProcedure
-    .input(z.object({ ID: z.string() }))
-    .mutation(async ({ input, ctx }) => {
-      return await ctx.db
-        .deleteFrom("WantsToWatch")
-        .where("movieID", "==", input.ID)
-        .where("userID", "==", ctx.auth.userId)
-        .returningAll()
-        .executeTakeFirstOrThrow();
-    }),
+  getForUser: protectedProcedure.query(async ({ ctx }) => {
+    return await ctx.db
+      .selectFrom("WantsToWatch")
+      .selectAll()
+      .where("WantsToWatch.userID", "=", ctx.auth.userId)
+      .execute();
+  }),
 
   reorder: protectedProcedure
     .input(
@@ -76,11 +62,22 @@ export const watchlistRouter = createTRPCRouter({
             .set({
               preference: change.newPreference,
             })
-            .where("movieID", "==", change.movieID)
-            .where("userID", "==", userID)
+            .where("movieID", "=", change.movieID)
+            .where("userID", "=", userID)
             .returningAll()
             .executeTakeFirstOrThrow();
         }
       });
+    }),
+
+  remove: protectedProcedure
+    .input(z.object({ ID: z.string() }))
+    .mutation(async ({ input, ctx }) => {
+      return await ctx.db
+        .deleteFrom("WantsToWatch")
+        .where("movieID", "=", input.ID)
+        .where("userID", "=", ctx.auth.userId)
+        .returningAll()
+        .executeTakeFirstOrThrow();
     }),
 });
