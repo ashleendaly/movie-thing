@@ -6,8 +6,9 @@ generator kysely {
 
     // Optionally provide a destination directory for the generated file
     // and a filename of your choice
-    output   = "../node_modules/@kysely/client"
-    fileName = "index.ts"
+    output      = "../node_modules/@kysely/client"
+    fileName    = "index.ts"
+    readOnlyIds = true
 }
 
 datasource db {
@@ -20,7 +21,7 @@ datasource db {
 }
 
 model Movie {
-    ID        String @id @default(cuid())
+    ID        String @id @default(dbgenerated("(gen_random_uuid())"))
     title     String
     posterURL String
 
@@ -32,25 +33,25 @@ model WantsToWatch {
     preference Int
     userID     String
     movieID    String
-    userId     String
 
     @@id([userID, movieID])
     @@unique([userID, preference])
 }
 
 model Club {
-    ID             String           @id @default(cuid())
-    ClubMembership ClubMembership[]
-    name           String
+    ID             String           @id @default(dbgenerated("(gen_random_uuid())"))
+    name           String           @unique
     sessionActive  Boolean
-    joinCode       String
+    joinCode       String           @unique
     joinable       Boolean
+    ClubMembership ClubMembership[]
 }
 
 model ClubMembership {
-    club   Club   @relation(fields: [clubID], references: [ID])
-    userID String
-    clubID String
+    club      Club    @relation(fields: [clubID], references: [ID])
+    userID    String
+    clubID    String
+    isPresent Boolean
 
     @@id([userID, clubID])
 }
