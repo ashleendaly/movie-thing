@@ -1,3 +1,4 @@
+"use client";
 import { CircleDashed } from "lucide-react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";

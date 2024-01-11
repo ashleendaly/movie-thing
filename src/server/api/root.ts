@@ -8,8 +8,8 @@ import { clubRouter } from "./routers/club";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-  watchList: watchlistRouter,
   club: clubRouter,
+  watchList: watchlistRouter,
 });
 
 // export type definition of API

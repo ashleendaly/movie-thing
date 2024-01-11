@@ -1,10 +1,11 @@
+"use client";
 import { UserButton } from "@clerk/nextjs";
-import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 
 export function Header() {
-  const router = useRouter();
-  const clubName = router.pathname.startsWith("/club/")
-    ? router.pathname.split("/").at(-1)
+  const pathname = usePathname();
+  const clubName = pathname.startsWith("/club/")
+    ? pathname.split("/").at(-1)
     : "";
   return (
     <div className="fixed top-0 flex h-[10dvh] w-full items-center justify-between bg-background px-5">

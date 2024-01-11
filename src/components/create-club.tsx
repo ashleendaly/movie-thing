@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { z } from "zod";
 import { api } from "~/utils/api";
 import { Button } from "./ui/button";
@@ -27,13 +27,17 @@ export function CreateClub() {
   });
 
   const onSubmit = handleSubmit(({ clubName }) => {
-    void toast
-      .promise(createClubAsync({ name: clubName }), {
+    void toast.promise(
+      createClubAsync({ name: clubName }).then(({ name: clubName }) =>
+        router.push(`/club/${clubName}`),
+      ),
+
+      {
         success: "Success!",
         loading: "Loading...",
         error: "Oops this name is taken",
-      })
-      .then(({ name: clubName }) => router.push(`/club/${clubName}`));
+      },
+    );
   });
 
   useEffect(() => {

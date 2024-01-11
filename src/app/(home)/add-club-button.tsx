@@ -1,8 +1,10 @@
-import { CreateClub } from "./create-club";
+"use client";
+
+import { Button } from "~/components/ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "~/components/ui/dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { JoinClub } from "./join-club";
-import { Button } from "../ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import { CreateClub } from "./create-club";
 
 export function AddClubButton() {
   return (

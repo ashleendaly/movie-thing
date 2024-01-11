@@ -1,11 +1,12 @@
+"use client";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { CircleDashed, Search } from "lucide-react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { Input } from "~/components/ui/input";
-import { env } from "~/env.mjs";
+import { env } from "~/env.js";
 import { type SearchResponse } from "~/types/omdb";
 
 type SearchForm = {
@@ -45,7 +46,7 @@ const AddWatchList = () => {
       </form>
       <ul className="grid grid-cols-2 gap-10 p-5">
         {status === "loading" && (
-          <CircleDashed className="h-10 w-10 animate-spin-slow stroke-foreground" />
+          <CircleDashed className="animate-spin-slow h-10 w-10 stroke-foreground" />
         )}
         {status === "success" &&
           movies

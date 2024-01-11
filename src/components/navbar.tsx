@@ -1,11 +1,12 @@
+"use client";
 import { Clapperboard, Home, Plus } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
+
 import { cn } from "~/utils/cn";
 
 export function Navbar() {
-  const router = useRouter();
-  const path = router.pathname;
+  const path = usePathname();
   return (
     <nav className="fixed bottom-0 flex h-[10dvh] w-full items-center justify-around bg-background">
       <Link href="/">
