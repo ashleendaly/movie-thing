@@ -3,6 +3,7 @@ import { Suspense } from "react";
 
 import { Divider } from "~/components/divider";
 import { Button } from "~/components/ui/button";
+import { Spinner } from "~/components/ui/spinner";
 import { api } from "~/lib/trpc/server";
 import { slugify } from "~/lib/utils/slugify";
 
@@ -33,7 +34,13 @@ async function UserClubs() {
 
 async function UserClubsLoading() {
   return (
-    <Suspense fallback={<>hello</>}>
+    <Suspense
+      fallback={
+        <div className="grid min-h-40 place-items-center">
+          <Spinner />
+        </div>
+      }
+    >
       <UserClubs />
     </Suspense>
   );

@@ -39,8 +39,7 @@ model WantsToWatch {
 }
 
 model Club {
-    ID             String           @id @default(dbgenerated("(gen_random_uuid())"))
-    name           String           @unique
+    name           String           @id @unique
     sessionActive  Boolean
     joinCode       String           @unique
     joinable       Boolean
@@ -48,7 +47,7 @@ model Club {
 }
 
 model ClubMembership {
-    club      Club    @relation(fields: [clubID], references: [ID])
+    club      Club    @relation(fields: [clubID], references: [name])
     userID    String
     clubID    String
     isPresent Boolean

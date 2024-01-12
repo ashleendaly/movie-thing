@@ -40,7 +40,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 <Navbar />
               </main>
             </TRPCReactProvider>
-            <Toaster closeButton />
+            <Toaster closeButton position="top-center" />
           </ThemeProvider>
         </ClerkProvider>
       </body>
