@@ -1,8 +1,9 @@
+"use client";
 import { CircleDashed } from "lucide-react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { z } from "zod";
-import { api } from "~/utils/api";
+import { api } from "~/lib/utils/api";
 
 const codeSchema = z.string().min(2);
 

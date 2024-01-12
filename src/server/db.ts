@@ -1,7 +1,7 @@
-import { type DB } from "@kysely/client";
-import { PostgresDialect, Kysely } from "kysely";
+import { Kysely, PostgresDialect } from "kysely";
 import { Pool } from "pg";
-import { env } from "~/env.mjs";
+import { env } from "~/env";
+import { type DB } from "~/types/db";
 
 const globalForKysely = globalThis as unknown as {
   kysely: Kysely<DB> | undefined;

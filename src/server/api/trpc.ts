@@ -1,39 +1,48 @@
+/**
+ * YOU PROBABLY DON'T NEED TO EDIT THIS FILE, UNLESS:
+ * 1. You want to modify request context (see Part 1).
+ * 2. You want to create a new middleware or type of procedure (see Part 3).
+ *
+ * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
+ * need to use are documented accordingly near the end.
+ */
 import {
-  getAuth,
   type SignedInAuthObject,
   type SignedOutAuthObject,
 } from "@clerk/nextjs/server";
 import { initTRPC, TRPCError } from "@trpc/server";
-import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import superjson from "superjson";
 import { ZodError } from "zod";
-
 import { db } from "~/server/db";
 
 interface CreateContextOptions {
   auth: SignedInAuthObject | SignedOutAuthObject;
 }
+/**
+ * 1. CONTEXT
+ *
+ * This section defines the "contexts" that are available in the backend API.
+ *
+ * These allow you to access things when processing a request, like the database, the session, etc.
+ *
+ * This helper generates the "internals" for a tRPC context. The API handler and RSC clients each
+ * wrap this and provides the required context.
+ *
+ * @see https://trpc.io/docs/server/context
+ */
 
-const createInnerTRPCContext = ({ auth }: CreateContextOptions) => {
-  return {
-    auth,
-    db,
-  };
-};
+export const createTRPCContext = ({ auth }: CreateContextOptions) => ({
+  db,
+  auth,
+});
 
 /**
- * This is the actual context you will use in your router. It will be used to process every request
- * that goes through your tRPC endpoint.
+ * 2. INITIALIZATION
  *
- * @see https://trpc.io/docs/context
+ * This is where the tRPC API is initialized, connecting the context and transformer. We also parse
+ * ZodErrors so that you get typesafety on the frontend if your procedure fails due to validation
+ * errors on the backend.
  */
-export const createTRPCContext = (opts: CreateNextContextOptions) => {
-  // Get the session from the server using the getServerSession wrapper function
-  return createInnerTRPCContext({
-    auth: getAuth(opts.req),
-  });
-};
-
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,
   errorFormatter({ shape, error }) {
