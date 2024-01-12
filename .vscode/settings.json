@@ -1,6 +1,7 @@
 {
   "cSpell.words": ["kysely"],
   "material-icon-theme.folders.associations": {
-    "(home)": "home"
+    "(home)": "home",
+    "trpc": "controller"
   }
 }

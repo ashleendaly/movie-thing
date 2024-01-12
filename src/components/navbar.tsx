@@ -3,7 +3,7 @@ import { Clapperboard, Home, Plus } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { cn } from "~/utils/cn";
+import { cn } from "~/lib/utils/cn";
 
 export function Navbar() {
   const path = usePathname();

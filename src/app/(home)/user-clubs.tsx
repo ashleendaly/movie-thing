@@ -3,8 +3,8 @@ import { Suspense } from "react";
 
 import { Divider } from "~/components/divider";
 import { Button } from "~/components/ui/button";
-import { api } from "~/trpc/server";
-import { slugify } from "~/utils/slugify";
+import { api } from "~/lib/trpc/server";
+import { slugify } from "~/lib/utils/slugify";
 
 async function UserClubs() {
   const userClubs = await api.club.getAllForUser.query();

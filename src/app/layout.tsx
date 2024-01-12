@@ -9,7 +9,7 @@ import { Header } from "~/components/header";
 import { Navbar } from "~/components/navbar";
 import { ThemeProvider } from "~/components/theme";
 import { Toaster } from "~/components/ui/sonner";
-import { TRPCReactProvider } from "~/trpc/react";
+import { TRPCReactProvider } from "~/lib/trpc/react";
 
 const inter = Inter({
   subsets: ["latin"],

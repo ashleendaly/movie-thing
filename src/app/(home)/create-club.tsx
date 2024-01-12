@@ -9,7 +9,7 @@ import { z } from "zod";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
-import { api } from "~/utils/api";
+import { api } from "~/lib/utils/api";
 
 const clubCreationSchema = z.object({
   clubName: z.string().regex(/^\w[\w-]*\w$/, "Invalid club name"),
