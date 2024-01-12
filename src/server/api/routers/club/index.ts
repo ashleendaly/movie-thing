@@ -10,9 +10,9 @@ export const clubRouter = createTRPCRouter({
     const userID = ctx.auth.userId;
     return await ctx.db
       .selectFrom("Club")
-      .innerJoin("ClubMembership", "Club.ID", "ClubMembership.clubID")
+      .innerJoin("ClubMembership", "Club.name", "ClubMembership.clubName")
       .where("ClubMembership.userID", "=", userID)
-      .select(["Club.ID", "Club.name"])
+      .select(["Club.name"])
       .execute();
   }),
 });

@@ -34,7 +34,7 @@ export const adminRouter = createTRPCRouter({
       await ctx.db
         .insertInto("ClubMembership")
         .values({
-          clubID: club.ID,
+          clubName: club.name,
           userID: userID,
           isPresent: false,
         })
@@ -46,39 +46,39 @@ export const adminRouter = createTRPCRouter({
   setJoinable: protectedProcedure
     .input(
       z.object({
-        clubID: z.string(),
+        clubName: z.string(),
         joinable: z.boolean(),
       }),
     )
-    .mutation(async ({ input: { clubID, joinable }, ctx }) => {
+    .mutation(async ({ input: { clubName, joinable }, ctx }) => {
       // TODO check if user has permission
       return await ctx.db
         .updateTable("Club")
         .set({
           joinable,
         })
-        .where("ID", "==", clubID)
+        .where("Club.name", "==", clubName)
         .returningAll()
         .executeTakeFirstOrThrow();
     }),
 
   activate: protectedProcedure
-    .input(z.object({ clubID: z.string() }))
-    .mutation(async ({ input: { clubID }, ctx }) => {
+    .input(z.object({ clubName: z.string() }))
+    .mutation(async ({ input: { clubName }, ctx }) => {
       // TODO check if user has permission
       return await ctx.db
         .updateTable("Club")
         .set({
           sessionActive: true,
         })
-        .where("ID", "==", clubID)
+        .where("Club.name", "==", clubName)
         .returningAll()
         .executeTakeFirstOrThrow();
     }),
 
   resetJoinCode: protectedProcedure
-    .input(z.object({ clubID: z.string() }))
-    .mutation(async ({ input: { clubID }, ctx }) => {
+    .input(z.object({ clubName: z.string() }))
+    .mutation(async ({ input: { clubName }, ctx }) => {
       // TODO check if user has permission
       return await ctx.db
         .updateTable("Club")
@@ -91,7 +91,7 @@ export const adminRouter = createTRPCRouter({
             separator: "-",
           }).at(0)!,
         })
-        .where("ID", "==", clubID)
+        .where("Club.name", "==", clubName)
         .returningAll()
         .executeTakeFirstOrThrow();
     }),
@@ -99,29 +99,32 @@ export const adminRouter = createTRPCRouter({
   rename: protectedProcedure
     .input(
       z.object({
-        clubID: z.string(),
+        clubName: z.string(),
         name: z.string(),
       }),
     )
-    .mutation(async ({ input: { clubID, name }, ctx }) => {
+    .mutation(async ({ input: { clubName, name }, ctx }) => {
       // TODO check if user has permission
       return await ctx.db
         .updateTable("Club")
         .set({
           name,
         })
-        .where("ID", "==", clubID)
+        .where("Club.name", "==", clubName)
         .returningAll()
         .executeTakeFirstOrThrow();
     }),
 
+  /* 
+  TODO: not 100% sure but I think this should be deleted
+  pretty sure the procedure in members handles this case
+  */
   join: protectedProcedure
     .input(z.object({ joinCode: z.string() }))
     .mutation(async ({ ctx, input: { joinCode } }) => {
-      // find club
-      const { ID, joinable } = await ctx.db
+      const { name, joinable } = await ctx.db
         .selectFrom("Club")
-        .select(["Club.ID", "Club.joinable"])
+        .select(["Club.name", "Club.joinable"])
         .where("Club.joinCode", "=", joinCode)
         .executeTakeFirstOrThrow();
 
@@ -134,7 +137,7 @@ export const adminRouter = createTRPCRouter({
       return await ctx.db
         .insertInto("ClubMembership")
         .values({
-          clubID: ID,
+          clubName: name,
           isPresent: false,
           userID: ctx.auth.userId,
         })
