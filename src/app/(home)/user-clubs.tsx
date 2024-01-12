@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { Suspense } from "react";
 
-import { Divider } from "~/components/divider";
 import { Button } from "~/components/ui/button";
+import { Divider } from "~/components/ui/divider";
 import { Spinner } from "~/components/ui/spinner";
 import { api } from "~/lib/trpc/server";
 import { slugify } from "~/lib/utils/slugify";

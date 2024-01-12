@@ -11,7 +11,7 @@ export interface MovieResponse {
 }
 
 export interface SearchResponse {
-  Search: MovieResponse[];
+  Search?: MovieResponse[];
 }
 
 export function useOMDB() {
@@ -22,12 +22,15 @@ export function useOMDB() {
         { method: "GET" },
       ).then((res) => res.json() as Promise<SearchResponse>);
 
-      return searchResult.filter((movie) => movie.Type === "movie") ?? [];
+      return searchResult?.filter((movie) => movie.Type === "movie") ?? [];
     },
     onSuccess: (result) => {
       if (result.length === 0) toast.error("No movies found");
     },
-    onError: () => toast.error("Something went wrong"),
+    onError: (e) => {
+      console.log(e);
+      toast.error("Something went wrong");
+    },
   });
   return { search, ...rest };
 }
