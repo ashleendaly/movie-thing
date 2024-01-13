@@ -1,3 +1,4 @@
+import { sql } from "kysely";
 import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
@@ -29,7 +30,11 @@ export const watchlistRouter = createTRPCRouter({
           preference: eb
             .selectFrom("WantsToWatch")
             .select((eb) =>
-              eb(eb.fn.max("preference"), "+", 1).as("preference"),
+              eb(
+                eb.fn.coalesce(eb.fn.max("preference"), sql<number>`0`),
+                "+",
+                1,
+              ).as("preference"),
             )
             .where("userID", "=", userID),
         }))
