@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { type Movie } from "~/types/db";
 
-export function Movie({ movie }: { movie: Movie }) {
+export function MovieListing({ movie }: { movie: Movie }) {
   const MovieDisplay =
     movie.posterURL === "N/A" ? MovieWithoutPoster : MovieWithPoster;
 

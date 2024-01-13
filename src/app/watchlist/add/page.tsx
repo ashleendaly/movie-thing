@@ -7,7 +7,7 @@ import { Input } from "~/components/ui/input";
 import { ScrollArea } from "~/components/ui/scroll-area";
 import { Spinner } from "~/components/ui/spinner";
 import { useOMDB } from "~/lib/hooks/use-omdb";
-import { Movie } from "./movie";
+import { AddableMovie } from "./addable-movie";
 
 type SearchForm = {
   searchQuery: string;
@@ -40,7 +40,9 @@ export default function AddToWatchlist() {
         )}
         <ul className="grid grid-cols-2 gap-10  p-5">
           {status === "success" &&
-            movies.map((movie) => <Movie key={movie.imdbID} movie={movie} />)}
+            movies.map((movie) => (
+              <AddableMovie key={movie.imdbID} movie={movie} />
+            ))}
         </ul>
       </ScrollArea>
     </div>
