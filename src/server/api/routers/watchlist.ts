@@ -6,7 +6,7 @@ export const watchlistRouter = createTRPCRouter({
   add: protectedProcedure
     .input(
       z.object({
-        ID: z.string(),
+        imdbID: z.string(),
         title: z.string(),
         posterURL: z.string().url(),
       }),
@@ -24,7 +24,7 @@ export const watchlistRouter = createTRPCRouter({
       return await ctx.db
         .insertInto("WantsToWatch")
         .values((eb) => ({
-          movieID: movieRecord.ID,
+          movieID: movieRecord.imdbID,
           userID,
           preference: eb
             .selectFrom("WantsToWatch")
