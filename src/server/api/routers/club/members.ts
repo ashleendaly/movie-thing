@@ -54,7 +54,7 @@ export const memberRouter = createTRPCRouter({
       const members = await ctx.db
         .selectFrom("ClubMembership")
         .select(["userID", "isPresent"])
-        .where("clubName", "==", clubName)
+        .where("clubName", "=", clubName)
         .execute();
 
       return await Promise.all(
@@ -80,8 +80,8 @@ export const memberRouter = createTRPCRouter({
         .set({
           isPresent,
         })
-        .where("clubName", "==", clubName)
-        .where("userID", "==", userID)
+        .where("clubName", "=", clubName)
+        .where("userID", "=", userID)
         .returningAll()
         .executeTakeFirstOrThrow();
     }),

@@ -56,7 +56,7 @@ export const adminRouter = createTRPCRouter({
         .set({
           joinable,
         })
-        .where("Club.name", "==", clubName)
+        .where("Club.name", "=", clubName)
         .returningAll()
         .executeTakeFirstOrThrow();
     }),
@@ -70,7 +70,7 @@ export const adminRouter = createTRPCRouter({
         .set({
           sessionActive: true,
         })
-        .where("Club.name", "==", clubName)
+        .where("Club.name", "=", clubName)
         .returningAll()
         .executeTakeFirstOrThrow();
     }),
@@ -90,7 +90,7 @@ export const adminRouter = createTRPCRouter({
             separator: "-",
           }).at(0)!,
         })
-        .where("Club.name", "==", clubName)
+        .where("Club.name", "=", clubName)
         .returningAll()
         .executeTakeFirstOrThrow();
     }),
@@ -109,7 +109,7 @@ export const adminRouter = createTRPCRouter({
         .set({
           name,
         })
-        .where("Club.name", "==", clubName)
+        .where("Club.name", "=", clubName)
         .returningAll()
         .executeTakeFirstOrThrow();
     }),
