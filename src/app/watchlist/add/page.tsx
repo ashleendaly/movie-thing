@@ -1,13 +1,13 @@
 "use client";
-import { CircleDashed, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { useForm } from "react-hook-form";
 
-import { ScrollArea } from "~/components/ui/scroll-area";
-import { Input } from "~/components/ui/input";
-import { useOMDB } from "~/lib/hooks/use-omdb";
-import { Movie } from "./movie";
 import { Button } from "~/components/ui/button";
+import { Input } from "~/components/ui/input";
+import { ScrollArea } from "~/components/ui/scroll-area";
 import { Spinner } from "~/components/ui/spinner";
+import { useOMDB } from "~/lib/hooks/use-omdb";
+import { AddableMovie } from "./addable-movie";
 
 type SearchForm = {
   searchQuery: string;
@@ -27,7 +27,6 @@ export default function AddToWatchlist() {
           placeholder="Search..."
           className="text-foreground"
         />
-        {/* TODO @pkitazos IDK how to get this search button to fit right with shadcn please advise */}
         <Button variant="accent" type="submit">
           <Search />
         </Button>
@@ -41,7 +40,9 @@ export default function AddToWatchlist() {
         )}
         <ul className="grid grid-cols-2 gap-10  p-5">
           {status === "success" &&
-            movies.map((movie) => <Movie key={movie.imdbID} movie={movie} />)}
+            movies.map((movie) => (
+              <AddableMovie key={movie.imdbID} movie={movie} />
+            ))}
         </ul>
       </ScrollArea>
     </div>

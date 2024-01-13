@@ -1,3 +1,4 @@
+import { sql } from "kysely";
 import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
@@ -6,7 +7,7 @@ export const watchlistRouter = createTRPCRouter({
   add: protectedProcedure
     .input(
       z.object({
-        ID: z.string(),
+        imdbID: z.string(),
         title: z.string(),
         posterURL: z.string().url(),
       }),
@@ -24,12 +25,16 @@ export const watchlistRouter = createTRPCRouter({
       return await ctx.db
         .insertInto("WantsToWatch")
         .values((eb) => ({
-          movieID: movieRecord.ID,
+          movieID: movieRecord.imdbID,
           userID,
           preference: eb
             .selectFrom("WantsToWatch")
             .select((eb) =>
-              eb(eb.fn.max("preference"), "+", 1).as("preference"),
+              eb(
+                eb.fn.coalesce(eb.fn.max("preference"), sql<number>`0`),
+                "+",
+                1,
+              ).as("preference"),
             )
             .where("userID", "=", userID),
         }))
@@ -40,7 +45,13 @@ export const watchlistRouter = createTRPCRouter({
   getForUser: protectedProcedure.query(async ({ ctx }) => {
     return await ctx.db
       .selectFrom("WantsToWatch")
-      .selectAll()
+      .innerJoin("Movie", "Movie.imdbID", "WantsToWatch.movieID")
+      .select([
+        "Movie.imdbID",
+        "Movie.posterURL",
+        "Movie.title",
+        "WantsToWatch.preference",
+      ])
       .where("WantsToWatch.userID", "=", ctx.auth.userId)
       .execute();
   }),

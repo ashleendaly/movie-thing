@@ -18,12 +18,12 @@ export const memberRouter = createTRPCRouter({
 
       const membership = await ctx.db
         .selectFrom("ClubMembership")
-        .where("ClubMembership.clubID", "=", club.ID)
+        .where("ClubMembership.clubName", "=", club.name)
         .where("ClubMembership.userID", "=", userID)
-        .select("ClubMembership.clubID")
+        .select("ClubMembership.clubName")
         .executeTakeFirst();
 
-      if (membership?.clubID) return club;
+      if (membership?.clubName) return club;
 
       if (!club.joinable) {
         throw new TRPCError({
@@ -35,7 +35,7 @@ export const memberRouter = createTRPCRouter({
       await ctx.db
         .insertInto("ClubMembership")
         .values({
-          clubID: club.ID,
+          clubName: club.name,
           userID: userID,
           isPresent: false,
         })
@@ -47,14 +47,14 @@ export const memberRouter = createTRPCRouter({
   list: protectedProcedure
     .input(
       z.object({
-        clubID: z.string(),
+        clubName: z.string(),
       }),
     )
-    .query(async ({ input: { clubID }, ctx }) => {
+    .query(async ({ input: { clubName }, ctx }) => {
       const members = await ctx.db
         .selectFrom("ClubMembership")
         .select(["userID", "isPresent"])
-        .where("clubID", "==", clubID)
+        .where("clubName", "==", clubName)
         .execute();
 
       return await Promise.all(
@@ -68,19 +68,19 @@ export const memberRouter = createTRPCRouter({
   setPresence: protectedProcedure
     .input(
       z.object({
-        clubID: z.string(),
+        clubName: z.string(),
         userID: z.string(),
         isPresent: z.boolean(),
       }),
     )
-    .mutation(async ({ input: { isPresent, clubID, userID }, ctx }) => {
+    .mutation(async ({ input: { isPresent, clubName, userID }, ctx }) => {
       // TODO check if user has permission
       return await ctx.db
         .updateTable("ClubMembership")
         .set({
           isPresent,
         })
-        .where("clubID", "==", clubID)
+        .where("clubName", "==", clubName)
         .where("userID", "==", userID)
         .returningAll()
         .executeTakeFirstOrThrow();
