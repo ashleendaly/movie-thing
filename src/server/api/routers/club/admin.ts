@@ -1,6 +1,5 @@
 import { generate } from "random-words";
 import { z } from "zod";
-import { TRPCError } from "@trpc/server";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
@@ -111,36 +110,6 @@ export const adminRouter = createTRPCRouter({
           name,
         })
         .where("Club.name", "==", clubName)
-        .returningAll()
-        .executeTakeFirstOrThrow();
-    }),
-
-  /* 
-  TODO: not 100% sure but I think this should be deleted
-  pretty sure the procedure in members handles this case
-  */
-  join: protectedProcedure
-    .input(z.object({ joinCode: z.string() }))
-    .mutation(async ({ ctx, input: { joinCode } }) => {
-      const { name, joinable } = await ctx.db
-        .selectFrom("Club")
-        .select(["Club.name", "Club.joinable"])
-        .where("Club.joinCode", "=", joinCode)
-        .executeTakeFirstOrThrow();
-
-      if (!joinable)
-        throw new TRPCError({
-          code: "UNAUTHORIZED",
-          message: "Club is not joinable",
-        });
-
-      return await ctx.db
-        .insertInto("ClubMembership")
-        .values({
-          clubName: name,
-          isPresent: false,
-          userID: ctx.auth.userId,
-        })
         .returningAll()
         .executeTakeFirstOrThrow();
     }),
