@@ -40,7 +40,13 @@ export const watchlistRouter = createTRPCRouter({
   getForUser: protectedProcedure.query(async ({ ctx }) => {
     return await ctx.db
       .selectFrom("WantsToWatch")
-      .selectAll()
+      .innerJoin("Movie", "Movie.imdbID", "WantsToWatch.movieID")
+      .select([
+        "Movie.imdbID",
+        "Movie.posterURL",
+        "Movie.title",
+        "WantsToWatch.preference",
+      ])
       .where("WantsToWatch.userID", "=", ctx.auth.userId)
       .execute();
   }),
