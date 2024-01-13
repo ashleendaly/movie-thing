@@ -23,7 +23,7 @@ model Movie {
 
 model WantsToWatch {
     movie      Movie  @relation(fields: [movieID], references: [imdbID])
-    preference Int
+    preference Float
     userID     String
     movieID    String
 
