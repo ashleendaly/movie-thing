@@ -1,28 +1,28 @@
 "use client";
-import { CircleDashed } from "lucide-react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { z } from "zod";
+import { toast } from "sonner";
+
+import { Spinner } from "~/components/ui/spinner";
 import { api } from "~/lib/utils/api";
 
-const codeSchema = z.string().min(2);
-
-export default function JoinClub() {
+export default function JoinClub({
+  params: { code },
+}: {
+  params: { code: string };
+}) {
   const router = useRouter();
   const { mutateAsync: joinClubAsync } = api.club.members.join.useMutation();
 
   useEffect(() => {
-    const result = codeSchema.safeParse(router.query.code);
-    if (result.success) {
-      void joinClubAsync({ joinCode: result.data }).then(({ name: clubName }) =>
-        router.push(`/club/${clubName}`),
-      );
-    }
-  }, [joinClubAsync, router]);
+    void joinClubAsync({ joinCode: code })
+      .then(({ name: clubName }) => router.push(`/club/${clubName}`))
+      .catch(() => toast.error("Invalid Join Code"));
+  }, [code, joinClubAsync, router]);
 
   return (
     <div className="grid h-[80dvh] place-items-center">
-      <CircleDashed className="animate-spin-slow h-10 w-10 stroke-foreground" />
+      <Spinner />
     </div>
   );
 }

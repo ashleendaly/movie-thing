@@ -3,9 +3,6 @@
 
 generator kysely {
     provider = "prisma-kysely"
-
-    // Optionally provide a destination directory for the generated file
-    // and a filename of your choice
     output      = "../src/types/db"
     fileName    = "index.ts"
     readOnlyIds = true
@@ -13,15 +10,11 @@ generator kysely {
 
 datasource db {
     provider = "postgresql"
-    // NOTE: When using mysql or sqlserver, uncomment the @db.Text annotations in model Account below
-    // Further reading:
-    // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
-    // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
     url      = env("POSTGRES_PRISMA_URL")
 }
 
 model Movie {
-    ID        String @id @default(dbgenerated("(gen_random_uuid())"))
+    imdbID        String @id 
     title     String
     posterURL String
 
@@ -29,8 +22,8 @@ model Movie {
 }
 
 model WantsToWatch {
-    movie      Movie  @relation(fields: [movieID], references: [ID])
-    preference Int
+    movie      Movie  @relation(fields: [movieID], references: [imdbID])
+    preference Float
     userID     String
     movieID    String
 
@@ -39,8 +32,7 @@ model WantsToWatch {
 }
 
 model Club {
-    ID             String           @id @default(dbgenerated("(gen_random_uuid())"))
-    name           String           @unique
+    name           String           @id @unique
     sessionActive  Boolean
     joinCode       String           @unique
     joinable       Boolean
@@ -48,10 +40,10 @@ model Club {
 }
 
 model ClubMembership {
-    club      Club    @relation(fields: [clubID], references: [ID])
+    club      Club    @relation(fields: [clubName], references: [name])
+    clubName    String
     userID    String
-    clubID    String
     isPresent Boolean
 
-    @@id([userID, clubID])
+    @@id([userID, clubName])
 }

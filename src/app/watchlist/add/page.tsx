@@ -1,75 +1,50 @@
 "use client";
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
-import { CircleDashed, Search } from "lucide-react";
-import Image from "next/image";
+import { Search } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+
+import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
-import { env } from "~/env.js";
-import { type SearchResponse } from "~/types/omdb";
+import { ScrollArea } from "~/components/ui/scroll-area";
+import { Spinner } from "~/components/ui/spinner";
+import { useOMDB } from "~/lib/hooks/use-omdb";
+import { AddableMovie } from "./addable-movie";
 
 type SearchForm = {
-  search: string;
+  searchQuery: string;
 };
 
-const AddWatchList = () => {
-  const {
-    mutate,
-    data: movies,
-    status,
-  } = useMutation({
-    mutationFn: async (search: string) => {
-      const res = await axios.get<SearchResponse>(
-        `http://www.omdbapi.com/?i=tt3896198&apikey=${env.NEXT_PUBLIC_OMDB_KEY}&s=${search}`,
-      );
-
-      return res.data.Search ?? [];
-    },
-    onSuccess: (d) => {
-      if (d.length === 0) toast.error("no movies found");
-    },
-    onError: () => toast.error("something went wrong"),
-  });
+export default function AddToWatchlist() {
+  const { search, data: movies, status } = useOMDB();
 
   const { register, handleSubmit } = useForm<SearchForm>();
-  const onSubmit = handleSubmit((data) => mutate(data.search));
+  const onSubmit = handleSubmit((formData) => search(formData.searchQuery));
 
   return (
-    <>
-      <form onSubmit={onSubmit} className="flex flex-row px-2">
-        <Input {...register("search")} placeholder="Search..." />
-        {/* TODO @pkitazos IDK how to get this search button to fit right with shadcn please advise */}
-        <button type="submit">
+    <div className="bg-background">
+      <form onSubmit={onSubmit} className="flex h-16 flex-row gap-1 px-4">
+        <Input
+          {...register("searchQuery")}
+          placeholder="Search..."
+          className="text-foreground"
+        />
+        <Button variant="accent" type="submit">
           <Search />
-        </button>
+        </Button>
       </form>
-      <ul className="grid grid-cols-2 gap-10 p-5">
+
+      <ScrollArea className="h-[calc(80dvh-4rem)]">
         {status === "loading" && (
-          <CircleDashed className="animate-spin-slow h-10 w-10 stroke-foreground" />
+          <div className="grid h-[calc(80dvh-4rem)] place-items-center">
+            <Spinner />
+          </div>
         )}
-        {status === "success" &&
-          movies
-            .filter((movie) => movie.Type === "movie")
-            .map(({ Poster, imdbID, Title }) => {
-              if (Poster === "N/A") {
-                return (
-                  <li key={imdbID}>
-                    <h1>{Title}</h1>
-                    <div className="text-slate-400">poster not found</div>
-                  </li>
-                );
-              }
-
-              return (
-                <li key={imdbID}>
-                  <Image src={Poster} alt={Title} height={445} width={300} />
-                </li>
-              );
-            })}
-      </ul>
-    </>
+        <ul className="grid grid-cols-2 gap-10  p-5">
+          {status === "success" &&
+            movies.map((movie) => (
+              <AddableMovie key={movie.imdbID} movie={movie} />
+            ))}
+        </ul>
+      </ScrollArea>
+    </div>
   );
-};
-
-export default AddWatchList;
+}
