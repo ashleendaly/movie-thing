@@ -15,7 +15,7 @@ export const AddableMovie = ({ movie }: { movie: Movie }) => {
           <MovieListing movie={movie} />
         </button>
       </DialogTrigger>
-      <DialogContent className=" rounded-md border-none bg-red-600 outline-none">
+      <DialogContent className="w-[90%] rounded-md border-none outline-none">
         <AddMovieDialog movie={movie} closeDialog={() => setOpen(false)} />
       </DialogContent>
     </Dialog>

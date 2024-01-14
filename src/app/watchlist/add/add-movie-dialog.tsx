@@ -12,11 +12,10 @@ export function AddMovieDialog({
   closeDialog,
 }: {
   movie: Movie;
-  closeDialog?: () => void;
+  closeDialog: () => void;
 }) {
   const { mutateAsync } = api.watchList.add.useMutation();
   return (
-    // TODO: fix background of card, currently overflows
     <Card className="grid grid-cols-2 place-items-center gap-3 border-x-thick border-y-thick border-primary px-7 py-4">
       <CardHeader className="col-span-2 text-2xl text-foreground underline decoration-accent decoration-4 underline-offset-2">
         <CardTitle>Add to Watchlist?</CardTitle>
@@ -31,11 +30,21 @@ export function AddMovieDialog({
         className="w-full font-semibold"
         size="lg"
         onClick={() =>
-          toast.promise(mutateAsync({ ...movie }).then(closeDialog), {
-            loading: "loading",
-            success: "Added movie to watchlist!",
-            error: "Something went wrong",
-          })
+          toast.promise(
+            mutateAsync({ ...movie }).then((e) => {
+              closeDialog();
+              return e;
+            }),
+            {
+              loading: "loading",
+              success: (res) => {
+                return res
+                  ? "Added movie to watchlist!"
+                  : "Movie already in watchlist";
+              },
+              error: "Something went wrong",
+            },
+          )
         }
       >
         yes

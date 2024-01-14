@@ -13,19 +13,29 @@ export const watchlistRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input: newMovie, ctx }) => {
+      console.log("called");
+
       const userID = ctx.auth.userId;
 
       const movieRecord = await ctx.db
-        .insertInto("Movie")
-        .values(newMovie)
-        .onConflict((oc) => oc.doNothing())
-        .returningAll()
-        .executeTakeFirstOrThrow();
+        .selectFrom("Movie")
+        .selectAll()
+        .where("Movie.imdbID", "=", newMovie.imdbID)
+        .executeTakeFirst();
+
+      if (!movieRecord) {
+        await ctx.db
+          .insertInto("Movie")
+          .values(newMovie)
+          .onConflict((oc) => oc.doUpdateSet(newMovie))
+          .returningAll()
+          .executeTakeFirstOrThrow();
+      }
 
       return await ctx.db
         .insertInto("WantsToWatch")
         .values((eb) => ({
-          movieID: movieRecord.imdbID,
+          movieID: newMovie.imdbID,
           userID,
           preference: eb
             .selectFrom("WantsToWatch")
@@ -39,7 +49,8 @@ export const watchlistRouter = createTRPCRouter({
             .where("userID", "=", userID),
         }))
         .returningAll()
-        .executeTakeFirstOrThrow();
+        .onConflict((oc) => oc.doNothing())
+        .executeTakeFirst();
     }),
 
   getForUser: protectedProcedure.query(async ({ ctx }) => {
