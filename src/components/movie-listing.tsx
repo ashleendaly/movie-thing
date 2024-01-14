@@ -25,7 +25,7 @@ function MovieWithoutPoster({
 }) {
   return (
     <div key={imdbID} className={cn(className)}>
-      <h1>{title}</h1>
+      <h1 className="text-foreground">{title}</h1>
       <div className="text-slate-400">poster not found</div>
     </div>
   );
