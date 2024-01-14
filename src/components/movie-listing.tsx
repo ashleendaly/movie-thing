@@ -1,30 +1,52 @@
+import { type ClassValue } from "clsx";
 import Image from "next/image";
+import { cn } from "~/lib/utils/cn";
 import { type Movie } from "~/types/db";
 
-export function MovieListing({ movie }: { movie: Movie }) {
+export function MovieListing({
+  movie,
+  className,
+}: {
+  movie: Movie;
+  className?: ClassValue;
+}) {
   const MovieDisplay =
     movie.posterURL === "N/A" ? MovieWithoutPoster : MovieWithPoster;
 
-  return <MovieDisplay movie={movie} />;
+  return <MovieDisplay movie={movie} className={className} />;
 }
 
-function MovieWithoutPoster({ movie: { imdbID, title } }: { movie: Movie }) {
+function MovieWithoutPoster({
+  movie: { imdbID, title },
+  className,
+}: {
+  movie: Movie;
+  className?: ClassValue;
+}) {
   return (
-    <li key={imdbID}>
+    <div key={imdbID} className={cn(className)}>
       <h1>{title}</h1>
       <div className="text-slate-400">poster not found</div>
-    </li>
+    </div>
   );
 }
 
 function MovieWithPoster({
-  movie: { posterURL, imdbID, title },
+  movie: { imdbID, title, posterURL },
+  className,
 }: {
   movie: Movie;
+  className?: ClassValue;
 }) {
   return (
-    <li key={imdbID}>
-      <Image src={posterURL} alt={title} height={445} width={300} />
-    </li>
+    <div key={imdbID} className={cn(className)}>
+      <Image
+        src={posterURL}
+        alt={title}
+        height={445}
+        width={300}
+        className="shadow-lg"
+      />
+    </div>
   );
 }
