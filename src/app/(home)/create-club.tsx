@@ -57,7 +57,7 @@ export function CreateClub() {
           {...register("clubName")}
         />
       </div>
-      <Button size="lg" className="h-16 text-lg">
+      <Button variant="accent" size="lg" className="h-16 text-lg">
         Create
       </Button>
     </form>
