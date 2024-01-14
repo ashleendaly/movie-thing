@@ -8,7 +8,7 @@ export function AddClubButton() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="h-16 w-full" size="lg">
+        <Button variant="secondary" className="h-16 w-full" size="lg">
           add a club
         </Button>
       </DialogTrigger>
