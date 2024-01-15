@@ -25,10 +25,11 @@ export function SortableMovieList({
     if (active.id === over.id) return;
 
     setMovies((movies) => {
-      const oldIndex = movies.findIndex((movie) => movie.imdbID === active.id);
-      const newIndex = movies.findIndex((movie) => movie.imdbID === over.id);
+      if (movies.length === 1) return movies;
 
-      const newPreference = computePreference(newIndex, movies);
+      const oldIndex = movies.findIndex((movie) => movie.imdbID === active.id);
+
+      const newPreference = computePreference(active.id, over.id, movies);
 
       movies[oldIndex] = {
         ...movies[oldIndex]!,
