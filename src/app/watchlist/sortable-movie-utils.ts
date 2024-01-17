@@ -1,6 +1,6 @@
 import { type UniqueIdentifier } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
-import { type MovieWithPreference } from "~/types";
+import { type SortableMovieList, type MovieWithPreference } from "~/types";
 
 // * NB this may be backwards
 /***
@@ -14,29 +14,40 @@ export function sortMovies(a: MovieWithPreference, b: MovieWithPreference) {
 /***
  * ? assume there are at least 2 elements in movies
  */
-export function computePreference(
+export function computeNewArr(
   activeID: UniqueIdentifier,
   overID: UniqueIdentifier,
-  movies: MovieWithPreference[],
-) {
-  const sortedMovies = movies.slice().sort(sortMovies);
+  movies: SortableMovieList,
+): SortableMovieList {
+  const oldIndex = movies.findIndex((movie) => movie.imdbID === activeID);
+  const newIndex = movies.findIndex((movie) => movie.imdbID === overID);
 
-  const oldIndex = sortedMovies.findIndex((movie) => movie.imdbID === activeID);
-  const newIndex = sortedMovies.findIndex((movie) => movie.imdbID === overID);
-
-  const arr = arrayMove(sortedMovies, oldIndex, newIndex);
+  const arr = arrayMove(movies, oldIndex, newIndex);
 
   const targetIndex = arr.findIndex((movie) => movie.imdbID === activeID);
 
-  if (targetIndex === 0) {
-    return Math.min(...arr.map((e) => e.preference)) - 1;
-  }
+  console.log(arr.map((e) => e.preference));
 
-  if (targetIndex === arr.length - 1) {
-    return Math.max(...arr.map((e) => e.preference)) + 1;
-  }
+  const prevPref =
+    arr[targetIndex - 1]?.preference ??
+    Math.min(...arr.map((e) => e.preference)) - 1;
+  const nextPref =
+    arr[targetIndex + 1]?.preference ??
+    Math.max(...arr.map((e) => e.preference)) + 1;
 
-  return (
-    (arr[targetIndex - 1]!.preference + arr[targetIndex + 1]!.preference) / 2
-  );
+  const newPref = (prevPref + nextPref) / 2;
+  // if (!prev) {
+  //   newPref = Math.min(...arr.map((e) => e.preference)) - 1;
+  // } else if (!next) {
+  //   newPref = Math.max(...arr.map((e) => e.preference)) + 1;
+  // } else {
+  //   newPref = (prev.preference + next.preference) / 2;
+  // }
+
+  console.log(newPref);
+
+  arr[targetIndex]!.preference = newPref;
+  arr[targetIndex]!.changed = true;
+
+  return arr;
 }

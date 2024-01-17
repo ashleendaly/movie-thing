@@ -2,7 +2,6 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
-import { MovieListing } from "~/components/movie-listing";
 import { type MovieWithPreference } from "~/types";
 
 export const SortableMovieListing = ({
@@ -20,7 +19,9 @@ export const SortableMovieListing = ({
 
   return (
     <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      <MovieListing key={movie.imdbID} movie={movie} />
+      <div>
+        {movie.title} - {movie.preference}
+      </div>
     </div>
   );
 };
