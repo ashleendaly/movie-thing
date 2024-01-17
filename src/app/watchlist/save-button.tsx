@@ -19,8 +19,8 @@ export function SaveButton({
   return (
     <Button
       disabled={!movies.some(({ changed }) => changed)}
-      onClick={
-        void toast.promise(
+      onClick={() =>
+        toast.promise(
           mutateAsync({
             changes: movies
               .filter((e) => e.changed)
