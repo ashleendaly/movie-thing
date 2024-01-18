@@ -24,12 +24,9 @@ export function SortableMovieList({
   function onDragEnd({ active, over }: DragEndEvent) {
     if (!over) return;
     if (active.id === over.id) return;
+    if (movies.length === 1) return movies;
 
-    setMovies((movies) => {
-      if (movies.length === 1) return movies;
-
-      return computeNewArr(active.id, over.id, movies);
-    });
+    setMovies(computeNewArr(active.id, over.id, movies));
   }
 
   return (

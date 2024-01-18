@@ -28,21 +28,12 @@ export function computeNewArr(
 
   console.log(arr.map((e) => e.preference));
 
-  const prevPref =
-    arr[targetIndex - 1]?.preference ??
-    Math.min(...arr.map((e) => e.preference)) - 1;
+  const prevPref = arr[targetIndex - 1]?.preference ?? 0;
   const nextPref =
     arr[targetIndex + 1]?.preference ??
     Math.max(...arr.map((e) => e.preference)) + 1;
 
   const newPref = (prevPref + nextPref) / 2;
-  // if (!prev) {
-  //   newPref = Math.min(...arr.map((e) => e.preference)) - 1;
-  // } else if (!next) {
-  //   newPref = Math.max(...arr.map((e) => e.preference)) + 1;
-  // } else {
-  //   newPref = (prev.preference + next.preference) / 2;
-  // }
 
   console.log(newPref);
 
