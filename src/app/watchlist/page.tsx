@@ -5,7 +5,7 @@ const WatchList = async () => {
   const movies = await api.watchList.getForUser.query();
   return (
     <div className="m-7" suppressHydrationWarning>
-      <SortableMovieList initialMovies={movies}></SortableMovieList>
+      <SortableMovieList initialMovies={movies}/>
     </div>
   );
 };
