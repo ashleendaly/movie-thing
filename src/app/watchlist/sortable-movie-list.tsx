@@ -7,17 +7,17 @@ import {
 } from "@dnd-kit/sortable";
 import { useState } from "react";
 
-import { type MovieWithPreference, type SortableMovieList } from "~/types";
 import { SaveButton } from "./save-button";
 import { SortableMovieListing } from "./sortable-movie-listing";
 import { computeNewArr, sortMovies } from "./sortable-movie-utils";
+import { type SortableMovie } from "~/types";
 
 export function SortableMovieList({
   initialMovies,
 }: {
-  initialMovies: MovieWithPreference[];
+  initialMovies: SortableMovie[];
 }) {
-  const [movies, setMovies] = useState<SortableMovieList>(
+  const [movies, setMovies] = useState<SortableMovie[]>(
     initialMovies.sort(sortMovies),
   );
 

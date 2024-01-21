@@ -1,14 +1,9 @@
 "use client";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { type SortableMovie } from "~/types";
 
-import { type MovieWithPreference } from "~/types";
-
-export const SortableMovieListing = ({
-  movie,
-}: {
-  movie: MovieWithPreference;
-}) => {
+export const SortableMovieListing = ({ movie }: { movie: SortableMovie }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: movie.imdbID });
 

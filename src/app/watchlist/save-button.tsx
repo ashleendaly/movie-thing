@@ -5,14 +5,14 @@ import { toast } from "sonner";
 
 import { Button } from "~/components/ui/button";
 import { api } from "~/lib/trpc/react";
-import { type SortableMovieList } from "~/types";
+import { type SortableMovie } from "~/types";
 
 export function SaveButton({
   movies,
   setMovies,
 }: {
-  movies: SortableMovieList;
-  setMovies: Dispatch<SetStateAction<SortableMovieList>>;
+  movies: SortableMovie[];
+  setMovies: Dispatch<SetStateAction<SortableMovie[]>>;
 }) {
   const { mutateAsync } = api.watchList.reorder.useMutation();
 

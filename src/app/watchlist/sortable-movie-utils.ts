@@ -1,13 +1,13 @@
 import { type UniqueIdentifier } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
-import { type SortableMovieList, type MovieWithPreference } from "~/types";
+import { type SortableMovie } from "~/types";
 
 // * NB this may be backwards
 /***
  * sorts two movies by their preference
  * @usage `sortedMovies = movies.sort(sortMovies)`
  */
-export function sortMovies(a: MovieWithPreference, b: MovieWithPreference) {
+export function sortMovies(a: SortableMovie, b: SortableMovie) {
   return a.preference - b.preference;
 }
 
@@ -17,8 +17,8 @@ export function sortMovies(a: MovieWithPreference, b: MovieWithPreference) {
 export function computeNewArr(
   activeID: UniqueIdentifier,
   overID: UniqueIdentifier,
-  movies: SortableMovieList,
-): SortableMovieList {
+  movies: SortableMovie[],
+): SortableMovie[] {
   const oldIndex = movies.findIndex((movie) => movie.imdbID === activeID);
   const newIndex = movies.findIndex((movie) => movie.imdbID === overID);
 
@@ -26,16 +26,12 @@ export function computeNewArr(
 
   const targetIndex = arr.findIndex((movie) => movie.imdbID === activeID);
 
-  console.log(arr.map((e) => e.preference));
-
   const prevPref = arr[targetIndex - 1]?.preference ?? 0;
   const nextPref =
     arr[targetIndex + 1]?.preference ??
     Math.max(...arr.map((e) => e.preference)) + 1;
 
   const newPref = (prevPref + nextPref) / 2;
-
-  console.log(newPref);
 
   arr[targetIndex]!.preference = newPref;
   arr[targetIndex]!.changed = true;
