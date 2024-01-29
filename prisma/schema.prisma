@@ -8,12 +8,6 @@ generator kysely {
     readOnlyIds = true
 }
 
-generator python {
-    provider             = "prisma-client-py"
-    interface            = "asyncio"
-    recursive_type_depth = 5
-}
-
 datasource db {
     provider = "postgresql"
     url      = env("POSTGRES_PRISMA_URL")
