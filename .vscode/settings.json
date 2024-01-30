@@ -1,9 +1,18 @@
 {
-  "cSpell.words": ["imdb", "joinable", "kysely", "omdb"],
+  "cSpell.words": [
+    "imdb",
+    "joinable",
+    "kysely",
+    "omdb",
+    "pydantic",
+    "pyflagr",
+    "sqlmodel"
+  ],
   "material-icon-theme.folders.associations": {
     "(home)": "home",
     "trpc": "controller",
     "ui": "template",
-    "apy":"api"
+    "apy": "api",
+    "repository":"generator"
   }
 }
