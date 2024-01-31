@@ -29,16 +29,15 @@ class SqlManager:
                 tblClubMembership.userID == tblWantsToWatch.userID,
             )
             res = session.exec(query)
+
             data = pd.DataFrame.from_records(
                 [
                     {
-                        "Query/Topic": 1,
-                        "Voter": membership.userID,
-                        "Item": movie.movieID,
-                        "Score": movie.preference,
-                        "Dataset": 1,
+                        "user": movie.userID,
+                        "item": movie.movieID,
+                        "preference": movie.preference,
                     }
-                    for [membership, movie] in res
+                    for [_, movie] in res
                 ]
             )
 
