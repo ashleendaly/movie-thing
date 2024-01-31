@@ -1,5 +1,6 @@
 {
   "cSpell.words": [
+    "borda",
     "imdb",
     "joinable",
     "kysely",
@@ -13,6 +14,6 @@
     "trpc": "controller",
     "ui": "template",
     "apy": "api",
-    "repository":"generator"
+    "repository": "generator"
   }
 }
