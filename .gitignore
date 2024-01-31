@@ -45,3 +45,4 @@ yarn-error.log*
 *.tsbuildinfo
 
 **/__pycache__
+**/.ipynb_checkpoints
