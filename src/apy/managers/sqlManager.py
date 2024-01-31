@@ -1,9 +1,12 @@
+import datetime
 from typing import List
-from sqlmodel import Session, create_engine, select
+from sqlmodel import Session, create_engine, select, delete, insert, update
 import pandas as pd
 
 from src.apy.models.tblWantsToWatch import tblWantsToWatch
 from src.apy.models.tblClubMembership import tblClubMembership
+from src.apy.models.tblClubRanking import tblClubRanking
+from src.apy.models.tblClub import tblClub
 
 
 class SqlManager:
@@ -21,7 +24,7 @@ class SqlManager:
 
             return [membership.userID for membership in club_memberships]
 
-    def get_club_ranks(self, clubName: str) -> pd.DataFrame:
+    def get_user_preferences(self, clubName: str) -> pd.DataFrame:
         with Session(self.engine) as session:
             query = select(tblClubMembership, tblWantsToWatch).where(
                 tblClubMembership.clubName == clubName,
@@ -42,3 +45,29 @@ class SqlManager:
             )
 
             return data
+
+    def write_results(self, clubName: str, data: pd.DataFrame):
+        with Session(self.engine) as session:
+            delete_old = delete(tblClubRanking).where(
+                tblClubRanking.clubName == clubName
+            )
+            session.exec(delete_old)
+
+            results = [
+                {"movieID": item, "rank": rank, clubName: clubName}
+                for (item, rank) in zip(data.index, data["borda-points"])
+            ]
+
+            insert_new = insert(tblClubRanking).values(results)
+
+            session.exec(insert_new)
+
+            update_date = (
+                update(tblClub)
+                .where(tblClub.clubName == clubName)
+                .values({"resultsComputedOn": datetime.datetime.now()})
+            )
+
+            session.exec(update_date)
+
+            return True

@@ -1,6 +1,7 @@
 {
   "cSpell.words": [
     "borda",
+    "dotenv",
     "fastapi",
     "imdb",
     "joinable",
