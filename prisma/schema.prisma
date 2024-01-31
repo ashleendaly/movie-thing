@@ -19,31 +19,48 @@ model Movie {
     posterURL String
 
     wantsToWatch WantsToWatch[]
+    ClubRanking  ClubRanking[]
 }
 
 model WantsToWatch {
-    movie      Movie  @relation(fields: [movieID], references: [imdbID])
     preference Float
     userID     String
     movieID    String
+
+    movie Movie @relation(fields: [movieID], references: [imdbID])
 
     @@id([userID, movieID])
     @@unique([userID, preference])
 }
 
 model Club {
-    name           String           @id @unique
-    sessionActive  Boolean
-    joinCode       String           @unique
-    joinable       Boolean
+    name              String    @id @unique
+    resultsComputedOn DateTime?
+    sessionActive     Boolean
+    joinCode          String    @unique
+    joinable          Boolean
+
     ClubMembership ClubMembership[]
+    ClubRanking    ClubRanking[]
 }
 
 model ClubMembership {
-    club      Club    @relation(fields: [clubName], references: [name])
     clubName  String
     userID    String
     isPresent Boolean
 
+    club Club @relation(fields: [clubName], references: [name])
+
     @@id([userID, clubName])
+}
+
+model ClubRanking {
+    movieID  String
+    clubName String
+    rank     Int
+
+    movie Movie @relation(fields: [movieID], references: [imdbID])
+    club  Club  @relation(fields: [clubName], references: [name])
+
+    @@id([clubName, movieID])
 }
