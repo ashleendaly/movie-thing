@@ -33,22 +33,22 @@ const config = {
         source: "/apy/:path*",
         destination:
           process.env.NODE_ENV === "development"
-            ? "http://127.0.0.1:8000/apy/:path*"
-            : "/apy/:path*",
+            ? "http://127.0.0.1:8000/api/:path*"
+            : "/api/",
       },
       {
         source: "/docs",
         destination:
           process.env.NODE_ENV === "development"
             ? "http://127.0.0.1:8000/docs"
-            : "/apy/docs",
+            : "/api/docs",
       },
       {
         source: "/openapi.json",
         destination:
           process.env.NODE_ENV === "development"
             ? "http://127.0.0.1:8000/openapi.json"
-            : "/apy/openapi.json",
+            : "/api/openapi.json",
       },
     ];
   },
