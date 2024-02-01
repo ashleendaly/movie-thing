@@ -15,7 +15,7 @@
     "lint": "next lint",
     "start": "next start",
     "py:lab": "poetry install && poetry run jupyter lab",
-    "py:freeze": "poetry install && poetry run pip freeze > requirements.txt"
+    "py:freeze": "poetry export -f requirements.txt --output requirements.txt --without-hashes"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.29.2",
