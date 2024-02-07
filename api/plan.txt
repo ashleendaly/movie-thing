@@ -1,0 +1,23 @@
+option 1: fat request
+
+server ---[ranking data]-->     api
+
+server <--[aggregated list]---  api
+
+----------
+
+option 2: trigger request with fat return
+
+
+server      ---[clubId]-->      api
+                                api <--[retrieve ranking data]-->   db 
+server <--[aggregated list]---  api
+
+----------
+
+option 3: trigger request for refreshing store
+
+server      ---[clubId]-->      api
+                                api <--[retrieve ranking data]---   db 
+                                api     ---[store results]-->       db 
+server      <--[done]---        api
