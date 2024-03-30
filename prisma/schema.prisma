@@ -28,7 +28,7 @@ model WantsToWatch {
     movieID    String
 
     @@id([userID, movieID])
-    @@unique([userID, preference])
+    // @@unique([userID, preference]) // should we just not check this? would make things simpler...
 }
 
 model Club {

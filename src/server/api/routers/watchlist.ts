@@ -27,7 +27,6 @@ export const watchlistRouter = createTRPCRouter({
         await ctx.db
           .insertInto("Movie")
           .values(newMovie)
-          .onConflict((oc) => oc.doUpdateSet(newMovie))
           .returningAll()
           .executeTakeFirstOrThrow();
       }
