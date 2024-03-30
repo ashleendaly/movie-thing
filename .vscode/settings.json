@@ -15,6 +15,7 @@
     "(home)": "home",
     "trpc": "controller",
     "ui": "template",
-    "repository": "generator"
+    "repository": "generator",
+    "apy": "api"
   }
 }
