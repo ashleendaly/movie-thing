@@ -13,6 +13,7 @@ export const aggregationRouter = createTRPCRouter({
         .orderBy("rank asc")
         .execute();
     }),
+
   computeRankings: protectedProcedure
     .input(z.object({ clubName: z.string() }))
     .mutation(async ({ ctx, input: { clubName } }) => {
@@ -87,7 +88,7 @@ function bordaFuze(rankings: string[][]): string[] {
       );
       return { name, points };
     })
-    .sort(({ points: xPoints }, { points: yPoints }) => xPoints - yPoints);
+    .sort((x, y) => y.points - x.points);
 
   return aggregatePoints.map((e) => e.name);
 }
