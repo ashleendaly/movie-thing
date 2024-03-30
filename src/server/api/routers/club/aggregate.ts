@@ -4,12 +4,18 @@ import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
 export const aggregationRouter = createTRPCRouter({
   getRankings: protectedProcedure
-    .input(z.object({ clubId: z.string() }))
-    .query(async ({ ctx, input: { clubId } }) => {
+    .input(z.object({ clubName: z.string() }))
+    .query(async ({ ctx, input: { clubName } }) => {
       return await ctx.db
         .selectFrom("ClubRanking")
-        .select(["movieID", "rank"])
-        .where("clubName", "==", clubId)
+        .innerJoin("Movie", "ClubRanking.movieID", "Movie.imdbID")
+        .select([
+          "Movie.imdbID",
+          "ClubRanking.rank",
+          "Movie.title",
+          "Movie.posterURL",
+        ])
+        .where("clubName", "=", clubName)
         .orderBy("rank asc")
         .execute();
     }),
@@ -19,14 +25,17 @@ export const aggregationRouter = createTRPCRouter({
     .mutation(async ({ ctx, input: { clubName } }) => {
       const rawPreferences = await ctx.db
         .selectFrom("WantsToWatch")
-        .select(["movieID", "preference", "userID"])
+        .select([
+          "WantsToWatch.movieID",
+          "WantsToWatch.preference",
+          "WantsToWatch.userID",
+        ])
         .innerJoin(
           "ClubMembership",
           "ClubMembership.userID",
           "WantsToWatch.userID",
         )
-        .where("ClubMembership.clubName", "==", clubName)
-        .groupBy("userID")
+        .where("ClubMembership.clubName", "=", clubName)
         .execute();
 
       const userPrefLists = partitionByUser(rawPreferences);
@@ -35,15 +44,16 @@ export const aggregationRouter = createTRPCRouter({
 
       await ctx.db
         .deleteFrom("ClubRanking")
-        .where("clubName", "==", clubName)
+        .where("clubName", "=", clubName)
         .execute();
 
-      await ctx.db
-        .insertInto("ClubRanking")
-        .values(
-          aggregateList.map((movieID, rank) => ({ clubName, movieID, rank })),
-        )
-        .execute();
+      const res = aggregateList.map((movieID, rank) => ({
+        clubName,
+        movieID,
+        rank,
+      }));
+
+      await ctx.db.insertInto("ClubRanking").values(res).execute();
     }),
 });
 
@@ -59,6 +69,7 @@ function partitionByUser(
   preferences.forEach(({ userID, ...rest }) => {
     const userPrefs = prefs[userID] ?? [];
     userPrefs.push({ ...rest });
+    prefs[userID] = userPrefs;
   });
 
   const userPrefLists = Object.values(prefs);

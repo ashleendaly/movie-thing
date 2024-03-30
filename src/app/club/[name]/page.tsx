@@ -1,4 +1,4 @@
-import { api } from "~/lib/trpc/server";
+import { Aggregation } from "./aggregation";
 import { Title } from "./title";
 
 export default async function Page({
@@ -9,7 +9,7 @@ export default async function Page({
   return (
     <div className="flex w-full flex-col gap-2">
       <Title name={name} joinCode="name" />
-      <div>what to watch</div>
+      <Aggregation clubName={name} />
       <div>members</div>
     </div>
   );
