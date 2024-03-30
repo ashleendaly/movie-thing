@@ -21,7 +21,7 @@ export default function AddToWatchlist() {
 
   return (
     <div className="bg-background">
-      <form onSubmit={onSubmit} className="flex h-16 flex-row gap-1 px-4">
+      <form onSubmit={onSubmit} className="mt-4 flex h-16 flex-row gap-1 px-4">
         <Input
           {...register("searchQuery")}
           placeholder="Search..."

@@ -25,7 +25,7 @@ export const metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body className={`font-sans ${inter.variable}`}>
+      <body className={`font-mono ${inter.variable}`}>
         <ClerkProvider>
           <ThemeProvider
             attribute="class"
@@ -40,7 +40,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 <Navbar />
               </main>
             </TRPCReactProvider>
-            <Toaster closeButton position="top-center" />
+            <Toaster closeButton position="top-center" richColors />
           </ThemeProvider>
         </ClerkProvider>
       </body>

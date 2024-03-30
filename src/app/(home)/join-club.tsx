@@ -49,7 +49,7 @@ export function JoinClub() {
           {...register("code")}
         />
       </div>
-      <Button size="lg" className="h-16 w-full text-lg">
+      <Button variant="accent" size="lg" className="h-16 w-full text-lg">
         Join
       </Button>
     </form>
