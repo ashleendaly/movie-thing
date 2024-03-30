@@ -3,10 +3,10 @@ from typing import List
 from sqlmodel import Session, create_engine, select, delete, insert, update
 import pandas as pd
 
-from api.models.tblWantsToWatch import tblWantsToWatch
-from api.models.tblClubMembership import tblClubMembership
-from api.models.tblClubRanking import tblClubRanking
-from api.models.tblClub import tblClub
+from apy.models.tblWantsToWatch import tblWantsToWatch
+from apy.models.tblClubMembership import tblClubMembership
+from apy.models.tblClubRanking import tblClubRanking
+from apy.models.tblClub import tblClub
 
 
 class SqlManager:

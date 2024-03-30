@@ -1,8 +1,8 @@
 from fastapi import FastAPI, Request
 
 
-from api.borda import aggregate_borda
-from api.instance import sql_repo
+from apy.borda import aggregate_borda
+from apy.instance import sql_repo
 
 app = FastAPI()
 
