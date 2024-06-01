@@ -10,7 +10,7 @@ generator kysely {
 
 datasource db {
     provider = "postgresql"
-    url      = env("POSTGRES_PRISMA_URL")
+    url      = env("POSTGRES_URL")
 }
 
 model Movie {
@@ -28,9 +28,9 @@ model WantsToWatch {
     movieID    String
 
     movie Movie @relation(fields: [movieID], references: [imdbID])
+    // @@unique([userID, preference]) // should we just not check this? would make things simpler...
 
     @@id([userID, movieID])
-    // @@unique([userID, preference]) // should we just not check this? would make things simpler...
 }
 
 model Club {
