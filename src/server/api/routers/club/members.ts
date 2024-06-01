@@ -1,6 +1,7 @@
 import { clerkClient } from "@clerk/nextjs";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
+import { clubNameSchema } from "~/lib/utils/club-name";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
@@ -45,11 +46,7 @@ export const memberRouter = createTRPCRouter({
     }),
 
   list: protectedProcedure
-    .input(
-      z.object({
-        clubName: z.string(),
-      }),
-    )
+    .input(z.object({ clubName: clubNameSchema }))
     .query(async ({ input: { clubName }, ctx }) => {
       const members = await ctx.db
         .selectFrom("ClubMembership")
@@ -68,7 +65,7 @@ export const memberRouter = createTRPCRouter({
   setPresence: protectedProcedure
     .input(
       z.object({
-        clubName: z.string(),
+        clubName: clubNameSchema,
         userID: z.string(),
         isPresent: z.boolean(),
       }),

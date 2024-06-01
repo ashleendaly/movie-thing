@@ -1,22 +1,19 @@
 import { generate } from "random-words";
 import { z } from "zod";
+import { clubNameSchema } from "~/lib/utils/club-name";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
 export const adminRouter = createTRPCRouter({
   create: protectedProcedure
-    .input(
-      z.object({
-        name: z.string(),
-      }),
-    )
-    .mutation(async ({ input: newClub, ctx }) => {
+    .input(z.object({ clubName: clubNameSchema }))
+    .mutation(async ({ input: { clubName }, ctx }) => {
       const userID = ctx.auth.userId;
 
       const club = await ctx.db
         .insertInto("Club")
         .values({
-          name: newClub.name,
+          name: clubName,
           sessionActive: false,
           joinable: true,
           joinCode: generate({
@@ -45,7 +42,7 @@ export const adminRouter = createTRPCRouter({
   setJoinable: protectedProcedure
     .input(
       z.object({
-        clubName: z.string(),
+        clubName: clubNameSchema,
         joinable: z.boolean(),
       }),
     )
@@ -53,30 +50,26 @@ export const adminRouter = createTRPCRouter({
       // TODO check if user has permission
       return await ctx.db
         .updateTable("Club")
-        .set({
-          joinable,
-        })
+        .set({ joinable })
         .where("Club.name", "=", clubName)
         .returningAll()
         .executeTakeFirstOrThrow();
     }),
 
   activate: protectedProcedure
-    .input(z.object({ clubName: z.string() }))
+    .input(z.object({ clubName: clubNameSchema }))
     .mutation(async ({ input: { clubName }, ctx }) => {
       // TODO check if user has permission
       return await ctx.db
         .updateTable("Club")
-        .set({
-          sessionActive: true,
-        })
+        .set({ sessionActive: true })
         .where("Club.name", "=", clubName)
         .returningAll()
         .executeTakeFirstOrThrow();
     }),
 
   resetJoinCode: protectedProcedure
-    .input(z.object({ clubName: z.string() }))
+    .input(z.object({ clubName: clubNameSchema }))
     .mutation(async ({ input: { clubName }, ctx }) => {
       // TODO check if user has permission
       return await ctx.db
@@ -98,17 +91,15 @@ export const adminRouter = createTRPCRouter({
   rename: protectedProcedure
     .input(
       z.object({
-        clubName: z.string(),
-        name: z.string(),
+        clubName: clubNameSchema,
+        newClubName: clubNameSchema,
       }),
     )
-    .mutation(async ({ input: { clubName, name }, ctx }) => {
+    .mutation(async ({ input: { clubName, newClubName }, ctx }) => {
       // TODO check if user has permission
       return await ctx.db
         .updateTable("Club")
-        .set({
-          name,
-        })
+        .set({ name: newClubName })
         .where("Club.name", "=", clubName)
         .returningAll()
         .executeTakeFirstOrThrow();

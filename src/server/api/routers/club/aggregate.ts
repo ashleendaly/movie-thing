@@ -1,10 +1,11 @@
 import { z } from "zod";
+import { clubNameSchema } from "~/lib/utils/club-name";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
 export const aggregationRouter = createTRPCRouter({
   getRankings: protectedProcedure
-    .input(z.object({ clubName: z.string() }))
+    .input(z.object({ clubName: clubNameSchema }))
     .query(async ({ ctx, input: { clubName } }) => {
       return await ctx.db
         .selectFrom("ClubRanking")
@@ -21,7 +22,7 @@ export const aggregationRouter = createTRPCRouter({
     }),
 
   computeRankings: protectedProcedure
-    .input(z.object({ clubName: z.string() }))
+    .input(z.object({ clubName: clubNameSchema }))
     .mutation(async ({ ctx, input: { clubName } }) => {
       const rawPreferences = await ctx.db
         .selectFrom("WantsToWatch")
