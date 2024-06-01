@@ -36,7 +36,7 @@ async function UserClubsLoading() {
   return (
     <Suspense
       fallback={
-        <div className="grid min-h-40 place-items-center">
+        <div className="grid min-h-40 place-items-center ">
           <Spinner />
         </div>
       }
