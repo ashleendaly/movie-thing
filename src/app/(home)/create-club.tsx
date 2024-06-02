@@ -31,7 +31,7 @@ export function CreateClub() {
 
   const onSubmit = handleSubmit(({ clubName }) => {
     void toast.promise(
-      createClubAsync({ name: clubName }).then(({ name: clubName }) =>
+      createClubAsync({ clubName }).then(({ name: clubName }) =>
         router.push(`/club/${clubName}`),
       ),
       {

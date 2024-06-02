@@ -1,12 +1,8 @@
 "use client";
-import { type User } from "@clerk/nextjs/server";
 import { QRCodeSVG } from "qrcode.react";
 import { env } from "~/env";
 
-type Member = {
-  user: User;
-  isPresent: boolean;
-};
+type Member = { userID: string; isPresent: boolean };
 
 export function ClubDetails({
   name,
