@@ -41,6 +41,12 @@
   }
 }
 
+@layer base {
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
 ::-webkit-scrollbar {
   width: 4px;
 }

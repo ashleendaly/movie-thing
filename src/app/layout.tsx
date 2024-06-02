@@ -34,9 +34,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             disableTransitionOnChange
           >
             <TRPCReactProvider cookies={cookies().toString()}>
-              <main className="h-[100dvh] bg-background py-[10dvh]">
+              <main className="h-[100dvh] py-[10dvh]">
                 <Header />
-                <section className=" h-[80dvh]">{children}</section>
+                <section className="h-[80dvh]">{children}</section>
                 <Navbar />
               </main>
             </TRPCReactProvider>
