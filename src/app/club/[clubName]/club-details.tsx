@@ -25,7 +25,7 @@ export function ClubDetails({
         <p className="pb-3 text-sm italic underline">Join this club:</p>
         <QRCodeSVG
           className="border-8 border-solid border-primary p-5"
-          value={`${env.NEXT_PUBLIC_SITE_URL}/join/${joinCode}`}
+          value={`${env.NEXT_PUBLIC_OUR_URL}/join/${joinCode}`}
           bgColor="hsl(var(--background))"
           fgColor="hsl(var(--foreground))"
           size={256}
