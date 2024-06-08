@@ -5,7 +5,6 @@ import { Inter } from "next/font/google";
 import { cookies } from "next/headers";
 import { type ReactNode } from "react";
 
-import { Header } from "~/app/(home)/header";
 import { Navbar } from "~/app/(home)/navbar";
 import { ThemeProvider } from "~/components/theme";
 import { Toaster } from "~/components/ui/sonner";
@@ -34,8 +33,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             disableTransitionOnChange
           >
             <TRPCReactProvider cookies={cookies().toString()}>
-              <main className="h-[100dvh] py-[10dvh]">
-                <Header />
+              <main className="h-[100dvh] pb-[10dvh] pt-4">
                 <section className="h-[80dvh]">{children}</section>
                 <Navbar />
               </main>

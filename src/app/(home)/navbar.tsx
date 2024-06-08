@@ -1,38 +1,21 @@
-"use client";
-import { Clapperboard, Home, Plus } from "lucide-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { UserButton } from "@clerk/nextjs";
+import { Clapperboard, Home, ListOrdered } from "lucide-react";
 
-import { cn } from "~/lib/utils/cn";
+import { NavLink } from "./nav-link";
 
 export function Navbar() {
-  const path = usePathname();
   return (
-    <nav className="fixed bottom-0 flex h-[10dvh] w-full items-center justify-around bg-background">
-      <Link href="/">
-        <Home
-          className={cn(
-            "h-10 w-10 stroke-foreground",
-            path === "/" && "stroke-primary",
-          )}
-        />
-      </Link>
-      <Link href="/watchlist/add">
-        <Plus
-          className={cn(
-            "h-10 w-10 stroke-foreground",
-            path === "/watchlist/add" && "stroke-primary",
-          )}
-        />
-      </Link>
-      <Link href="/watchlist">
-        <Clapperboard
-          className={cn(
-            "h-10 w-10 stroke-foreground",
-            path === "/watchlist" && "stroke-primary",
-          )}
-        />
-      </Link>
+    <nav className="fixed bottom-0 grid w-full grid-cols-4 place-items-center border-t-0 border-accent bg-background py-6 md:border-t-thick">
+      <NavLink tip="Home" route="/">
+        <Home />
+      </NavLink>
+      <NavLink tip="Discover" route="/watchlist/add">
+        <Clapperboard />
+      </NavLink>
+      <NavLink tip="Watchlist" route="/watchlist">
+        <ListOrdered />
+      </NavLink>
+      <UserButton />
     </nav>
   );
 }
