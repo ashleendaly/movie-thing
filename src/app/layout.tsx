@@ -9,6 +9,7 @@ import { Navbar } from "~/app/(home)/navbar";
 import { ThemeProvider } from "~/components/theme";
 import { Toaster } from "~/components/ui/sonner";
 import { TRPCReactProvider } from "~/lib/trpc/react";
+import { DebugOverlay } from "~/components/debug-overlay";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -34,6 +35,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           >
             <TRPCReactProvider cookies={cookies().toString()}>
               <main className="h-[100dvh] pb-[10dvh] pt-4">
+                <DebugOverlay />
                 <section className="h-[80dvh]">{children}</section>
                 <Navbar />
               </main>

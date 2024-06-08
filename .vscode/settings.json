@@ -9,7 +9,8 @@
     "omdb",
     "pydantic",
     "pyflagr",
-    "sqlmodel"
+    "sqlmodel",
+    "vaul"
   ],
   "material-icon-theme.folders.associations": {
     "(home)": "home",
