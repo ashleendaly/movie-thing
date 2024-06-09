@@ -39,7 +39,7 @@ export function JoinClub() {
   });
 
   return (
-    <form className="flex flex-col gap-5 py-10" onSubmit={onSubmit}>
+    <form className="flex flex-col gap-5" onSubmit={onSubmit}>
       <div>
         <Label className="text-lg text-foreground/90">Code</Label>
         <Input

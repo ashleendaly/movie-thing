@@ -47,7 +47,7 @@ export function CreateClub() {
   }, [errors]);
 
   return (
-    <form onSubmit={onSubmit} className="flex flex-col gap-5 py-10">
+    <form onSubmit={onSubmit} className="flex flex-col gap-5">
       <div>
         <Label className="text-lg text-foreground/90">Name</Label>
         <Input
