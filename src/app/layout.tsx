@@ -9,7 +9,6 @@ import { Navbar } from "~/app/(home)/navbar";
 import { ThemeProvider } from "~/components/theme";
 import { Toaster } from "~/components/ui/sonner";
 import { TRPCReactProvider } from "~/lib/trpc/react";
-import { DebugOverlay } from "~/components/debug-overlay";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -34,9 +33,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             disableTransitionOnChange
           >
             <TRPCReactProvider cookies={cookies().toString()}>
-              <main className="h-[100dvh] pb-[10dvh] pt-4">
-                <DebugOverlay />
-                <section className="h-[80dvh]">{children}</section>
+              <main className="h-dvh pb-28">
+                <section className="h-[calc(100dvh-7rem)]">{children}</section>
                 <Navbar />
               </main>
             </TRPCReactProvider>
