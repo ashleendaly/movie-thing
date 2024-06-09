@@ -1,4 +1,5 @@
 "use client";
+import { Check, X } from "lucide-react";
 import { toast } from "sonner";
 import { MovieListing } from "~/components/movie-listing";
 import { Button } from "~/components/ui/button";
@@ -21,13 +22,12 @@ export function AddMovieDialog({
         <CardTitle>Add to Watchlist?</CardTitle>
       </CardHeader>
       <MovieListing
-        movie={movie}
         className="col-span-2 w-2/3 place-self-center rounded-sm"
+        movie={movie}
       />
-
       <Button
-        variant="constructive"
-        className="w-full font-semibold"
+        className="flex w-full items-center gap-2 font-semibold"
+        variant="accent"
         size="lg"
         onClick={() =>
           toast.promise(
@@ -37,26 +37,25 @@ export function AddMovieDialog({
             }),
             {
               loading: "loading",
-              success: (res) => {
-                return res
+              success: (res) =>
+                res
                   ? "Added movie to watchlist!"
-                  : "Movie already in watchlist";
-              },
+                  : "Movie already in watchlist",
               error: "Something went wrong",
             },
           )
         }
       >
-        yes
+        <Check /> Yes
       </Button>
       <DialogClose asChild>
         <Button
-          className="w-full font-semibold"
+          className="flex w-full items-center gap-2 font-semibold"
+          variant="muted"
           type="button"
-          variant="destructive"
           size="lg"
         >
-          no
+          <X /> No
         </Button>
       </DialogClose>
     </Card>
