@@ -1,6 +1,7 @@
 import { clerkClient } from "@clerk/nextjs";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
+import { triggerClubReload } from "~/lib/pusher";
 import { clubNameSchema } from "~/lib/utils/club-name";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
@@ -73,12 +74,16 @@ export const memberRouter = createTRPCRouter({
     )
     .mutation(async ({ input: { isPresent, clubName, userID }, ctx }) => {
       // TODO check if user has permission
-      return await ctx.db
+      const data = await ctx.db
         .updateTable("ClubMembership")
         .set({ isPresent })
         .where("clubName", "=", clubName)
         .where("userID", "=", userID)
         .returningAll()
         .executeTakeFirstOrThrow();
+
+      await triggerClubReload(clubName);
+
+      return data;
     }),
 });
