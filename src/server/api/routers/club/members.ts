@@ -1,3 +1,4 @@
+import { clerkClient } from "@clerk/nextjs";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { clubNameSchema } from "~/lib/utils/club-name";
@@ -47,11 +48,19 @@ export const memberRouter = createTRPCRouter({
   list: protectedProcedure
     .input(z.object({ clubName: clubNameSchema }))
     .query(async ({ input: { clubName }, ctx }) => {
-      return await ctx.db
+      const members = await ctx.db
         .selectFrom("ClubMembership")
         .select(["userID", "isPresent"])
         .where("clubName", "=", clubName)
+        .orderBy("userID")
         .execute();
+
+      return await Promise.all(
+        members.map(async ({ userID, isPresent }) => ({
+          user: await clerkClient.users.getUser(userID),
+          isPresent,
+        })),
+      );
     }),
 
   setPresence: protectedProcedure

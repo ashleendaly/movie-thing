@@ -1,5 +1,6 @@
 import { type User } from "@clerk/nextjs/server";
 
+import { MemberDetails } from "./members/details";
 import { QRCode } from "./qr-code";
 
 export type Member = { user: User; isPresent: boolean };
@@ -19,6 +20,7 @@ export function ClubDetails({
         <h1 className="text-3xl underline">{name}</h1>
         <QRCode joinCode={joinCode} />
       </div>
+      <MemberDetails members={members} />
     </div>
   );
 }
