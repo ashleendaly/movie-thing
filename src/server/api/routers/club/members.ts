@@ -1,5 +1,7 @@
+import { clerkClient } from "@clerk/nextjs";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
+import { triggerClubReload } from "~/lib/pusher";
 import { clubNameSchema } from "~/lib/utils/club-name";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
@@ -47,11 +49,19 @@ export const memberRouter = createTRPCRouter({
   list: protectedProcedure
     .input(z.object({ clubName: clubNameSchema }))
     .query(async ({ input: { clubName }, ctx }) => {
-      return await ctx.db
+      const members = await ctx.db
         .selectFrom("ClubMembership")
         .select(["userID", "isPresent"])
         .where("clubName", "=", clubName)
+        .orderBy("userID")
         .execute();
+
+      return await Promise.all(
+        members.map(async ({ userID, isPresent }) => ({
+          user: await clerkClient.users.getUser(userID),
+          isPresent,
+        })),
+      );
     }),
 
   setPresence: protectedProcedure
@@ -64,12 +74,16 @@ export const memberRouter = createTRPCRouter({
     )
     .mutation(async ({ input: { isPresent, clubName, userID }, ctx }) => {
       // TODO check if user has permission
-      return await ctx.db
+      const data = await ctx.db
         .updateTable("ClubMembership")
         .set({ isPresent })
         .where("clubName", "=", clubName)
         .where("userID", "=", userID)
         .returningAll()
         .executeTakeFirstOrThrow();
+
+      await triggerClubReload(clubName);
+
+      return data;
     }),
 });

@@ -7,13 +7,18 @@ export const env = createEnv({
    * isn't built with invalid env vars.
    */
   server: {
-    POSTGRES_URL: z.string().url(),
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
 
-    // clerk keys;
+    POSTGRES_URL: z.string().url(),
+
+    // Clerk
     CLERK_SECRET_KEY: z.string(),
+
+    // Pusher
+    PUSHER_KEY: z.string(),
+    PUSHER_SECRET: z.string(),
   },
 
   /**
@@ -22,10 +27,16 @@ export const env = createEnv({
    * `NEXT_PUBLIC_`.
    */
   client: {
-    // NEXT_PUBLIC_CLIENTVAR: z.string(),
+    // OMBD stuff
     NEXT_PUBLIC_OUR_URL: z.string().url(),
     NEXT_PUBLIC_OMDB_KEY: z.string(),
+
+    // Clerk
     NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string(),
+
+    // Pusher
+    NEXT_PUBLIC_PUSHER_APP_ID: z.string(),
+    NEXT_PUBLIC_PUSHER_CLUSTER: z.string(),
   },
 
   /**
@@ -40,7 +51,10 @@ export const env = createEnv({
       process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
     CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
     NEXT_PUBLIC_OMDB_KEY: process.env.NEXT_PUBLIC_OMDB_KEY,
-    // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
+    PUSHER_KEY: process.env.PUSHER_KEY,
+    PUSHER_SECRET: process.env.PUSHER_SECRET,
+    NEXT_PUBLIC_PUSHER_APP_ID: process.env.NEXT_PUBLIC_PUSHER_APP_ID,
+    NEXT_PUBLIC_PUSHER_CLUSTER: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

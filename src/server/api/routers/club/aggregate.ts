@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { triggerClubReload } from "~/lib/pusher";
 import { clubNameSchema } from "~/lib/utils/club-name";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
@@ -55,6 +56,8 @@ export const aggregationRouter = createTRPCRouter({
       }));
 
       await ctx.db.insertInto("ClubRanking").values(res).execute();
+
+      await triggerClubReload(clubName);
     }),
 });
 
