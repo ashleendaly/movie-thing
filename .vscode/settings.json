@@ -9,6 +9,7 @@
     "omdb",
     "pydantic",
     "pyflagr",
+    "recs",
     "sqlmodel",
     "vaul"
   ],
