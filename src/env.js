@@ -17,7 +17,6 @@ export const env = createEnv({
     CLERK_SECRET_KEY: z.string(),
 
     // Pusher
-    PUSHER_KEY: z.string(),
     PUSHER_SECRET: z.string(),
   },
 
@@ -35,6 +34,7 @@ export const env = createEnv({
     NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string(),
 
     // Pusher
+    NEXT_PUBLIC_PUSHER_KEY: z.string(),
     NEXT_PUBLIC_PUSHER_APP_ID: z.string(),
     NEXT_PUBLIC_PUSHER_CLUSTER: z.string(),
   },
@@ -47,12 +47,15 @@ export const env = createEnv({
     POSTGRES_URL: process.env.POSTGRES_URL,
     NEXT_PUBLIC_OUR_URL: process.env.NEXT_PUBLIC_OUR_URL,
     NODE_ENV: process.env.NODE_ENV,
+    // Clerk
     NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY:
       process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
     CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
+    // OMDB
     NEXT_PUBLIC_OMDB_KEY: process.env.NEXT_PUBLIC_OMDB_KEY,
-    PUSHER_KEY: process.env.PUSHER_KEY,
+    // pusher
     PUSHER_SECRET: process.env.PUSHER_SECRET,
+    NEXT_PUBLIC_PUSHER_KEY: process.env.NEXT_PUBLIC_PUSHER_KEY,
     NEXT_PUBLIC_PUSHER_APP_ID: process.env.NEXT_PUBLIC_PUSHER_APP_ID,
     NEXT_PUBLIC_PUSHER_CLUSTER: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
   },

@@ -1,7 +1,7 @@
 import { clerkClient } from "@clerk/nextjs";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { triggerClubReload } from "~/lib/pusher";
+import { triggerClubReload } from "~/lib/pusher/server";
 import { clubNameSchema } from "~/lib/utils/club-name";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";

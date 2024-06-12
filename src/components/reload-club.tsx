@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-import { pusherClient } from "~/lib/pusher";
+import { pusherClient } from "~/lib/pusher/client";
 
 export function ReloadClub({ clubName }: { clubName: string }) {
   const router = useRouter();
