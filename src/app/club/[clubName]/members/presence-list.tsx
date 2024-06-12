@@ -1,5 +1,6 @@
 import { type ClubMember } from "~/types";
-import { PresenceToggle } from "./presence-toggle";
+import { Toggle } from "./toggle";
+import { UserAvatar } from "./user-avatar";
 
 export function PresenceList({
   members,
@@ -11,7 +12,14 @@ export function PresenceList({
   return (
     <ul>
       {members.map((m) => (
-        <PresenceToggle key={m.user.id} clubName={clubName} member={m} />
+        <div key={m.user.id} className="flex flex-row items-center gap-2 p-2">
+          <UserAvatar member={m} />
+          <Toggle
+            clubName={clubName}
+            initial={m.isPresent}
+            userID={m.user.id}
+          />
+        </div>
       ))}
     </ul>
   );
