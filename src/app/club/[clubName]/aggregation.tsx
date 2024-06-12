@@ -24,7 +24,7 @@ export function Aggregation({ clubName }: { clubName: string }) {
   if (status === "loading") return <p>loading...</p>;
 
   return (
-    <div className="flex w-full flex-col items-center space-y-7 px-4">
+    <div className="flex w-full flex-col items-center space-y-7">
       <Button
         className="flex w-full items-center gap-2"
         size="lg"
