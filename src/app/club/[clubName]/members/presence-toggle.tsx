@@ -1,12 +1,12 @@
-import { type Member } from "../club-details";
 import { UserAvatar } from "./user-avatar";
 import { Toggle } from "./toggle";
+import { type ClubMember } from "~/types";
 
 export function PresenceToggle({
   member,
   clubName,
 }: {
-  member: Member;
+  member: ClubMember;
   clubName: string;
 }) {
   return (

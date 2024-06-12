@@ -1,11 +1,11 @@
-import { type Member } from "../club-details";
+import { type ClubMember } from "~/types";
 import { PresenceToggle } from "./presence-toggle";
 
 export function PresenceList({
   members,
   clubName,
 }: {
-  members: Member[];
+  members: ClubMember[];
   clubName: string;
 }) {
   return (

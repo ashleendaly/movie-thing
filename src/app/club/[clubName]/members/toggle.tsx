@@ -27,9 +27,7 @@ export function Toggle({
             userID,
             isPresent,
             clubName,
-          }).then(() => router.refresh()), //todo this should really be after the toast
-
-          // I have that working in jget but it doesnt seem to here...
+          }).then(() => router.refresh()),
           { success: "Updated", loading: "Loading...", error: "Error!" },
         );
       }}

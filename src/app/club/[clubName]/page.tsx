@@ -1,8 +1,11 @@
+import { ScrollArea } from "~/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { api } from "~/lib/trpc/server";
-import { Aggregation } from "./aggregation";
-import { ClubDetails } from "./club-details";
+import { Aggregation } from "./aggregate";
+import { ClubTitleBar } from "./club-title-bar";
+import { MemberDetails } from "./members/details";
 import { PresenceList } from "./members/presence-list";
+import { Code } from "./qr-code/code";
 
 export default async function Page({
   params: { clubName },
@@ -13,22 +16,37 @@ export default async function Page({
   const { joinCode } = await api.club.getJoinCode.query({ clubName });
 
   return (
-    <div className="flex w-full flex-col justify-center gap-2">
-      <section id="main"></section>
-
-      <ClubDetails members={members} name={clubName} joinCode={joinCode} />
-      <Tabs defaultValue="aggregation" className="">
-        <TabsList>
-          <TabsTrigger value="presence">Presence</TabsTrigger>
-          <TabsTrigger value="aggregation">Aggregation</TabsTrigger>
-        </TabsList>
-        <TabsContent value="presence">
-          <PresenceList clubName={clubName} members={members} />
-        </TabsContent>
-        <TabsContent value="aggregation">
-          <Aggregation clubName={clubName} />
-        </TabsContent>
-      </Tabs>
+    <div className="grid grid-cols-12 gap-8 pt-5">
+      <section
+        id="main"
+        className="col-span-12 col-start-1 px-5 lg:col-span-8 lg:col-start-3 lg:px-0"
+      >
+        {/* don't ask questions */}
+        <ScrollArea className="h-[calc(100dvh-9rem+4px)]">
+          <div className="flex flex-col gap-5">
+            <ClubTitleBar name={clubName} joinCode={joinCode} />
+            <MemberDetails members={members} className="hidden lg:block" />
+            <Tabs defaultValue="aggregation">
+              <TabsList className="mb-5">
+                <TabsTrigger value="presence">Presence</TabsTrigger>
+                <TabsTrigger value="aggregation">Aggregation</TabsTrigger>
+              </TabsList>
+              <TabsContent value="presence">
+                <PresenceList clubName={clubName} members={members} />
+              </TabsContent>
+              <TabsContent value="aggregation">
+                <Aggregation clubName={clubName} />
+              </TabsContent>
+            </Tabs>
+          </div>
+        </ScrollArea>
+      </section>
+      <section
+        id="sidebar"
+        className="col-span-2 flex items-start justify-center"
+      >
+        <Code joinCode={joinCode} className="fixed hidden lg:block" />
+      </section>
     </div>
   );
 }

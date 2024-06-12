@@ -1,14 +1,14 @@
-import { Avatar, AvatarImage, AvatarFallback } from "~/components/ui/avatar";
-import { type Member } from "../club-details";
-import { cn } from "~/lib/utils/cn";
-import { Tooltip } from "~/components/ui/tooltip";
 import { type ClassValue } from "clsx";
+import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
+import { Tooltip } from "~/components/ui/tooltip";
+import { cn } from "~/lib/utils/cn";
+import { type ClubMember } from "~/types";
 
 export function UserAvatar({
   member,
   className,
 }: {
-  member: Member;
+  member: ClubMember;
   className?: ClassValue;
 }) {
   return (
