@@ -5,24 +5,36 @@ import { cn } from "~/lib/utils/cn";
 import { type ClubMember } from "~/types";
 
 export function UserAvatar({
-  member,
+  member: {
+    isPresent,
+    user: { username, imageUrl },
+  },
   className,
 }: {
   member: ClubMember;
   className?: ClassValue;
 }) {
   return (
-    <Tooltip tip={member.user.username!} delay={100}>
-      <Avatar
+    <Tooltip tip={username ?? "Unnamed User"} delay={100}>
+      <div
         className={cn(
-          "transition-all hover:z-10 hover:scale-105",
-          !member.isPresent && "brightness-75",
+          "relative transition-all hover:z-10 hover:scale-105",
+          !isPresent && "brightness-75",
           className,
         )}
       >
-        <AvatarImage src={member.user.imageUrl} />
-        <AvatarFallback>{member.user.username?.at(0)}</AvatarFallback>
-      </Avatar>
+        <Avatar>
+          <AvatarImage src={imageUrl} />
+          <AvatarFallback>{username?.at(0)}</AvatarFallback>
+        </Avatar>
+        <div
+          id="activity indicator"
+          className={cn(
+            "absolute -bottom-1 right-0 h-3 w-3 rounded-full",
+            isPresent ? "bg-green-500" : "bg-red-500",
+          )}
+        />
+      </div>
     </Tooltip>
   );
 }

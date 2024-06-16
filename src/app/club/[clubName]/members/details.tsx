@@ -11,9 +11,9 @@ export function MemberDetails({
   className?: ClassValue;
 }) {
   return (
-    <div className={cn("flex flex-col gap-1", className)}>
+    <div className={cn("flex flex-col gap-1 pl-1", className)}>
       <p>Members:</p>
-      <ul className="flex h-10 flex-row flex-wrap overflow-hidden">
+      <ul className="flex h-10 flex-row">
         {members.map((m, i) => (
           <UserAvatar
             key={m.user.id}
