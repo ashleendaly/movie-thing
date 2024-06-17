@@ -5,6 +5,7 @@ import { triggerClubReload } from "~/lib/pusher/server";
 import { clubNameSchema } from "~/lib/utils/club-name";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import { type ClubMember } from "~/types";
 
 export const memberRouter = createTRPCRouter({
   join: protectedProcedure
@@ -57,10 +58,16 @@ export const memberRouter = createTRPCRouter({
         .execute();
 
       return await Promise.all(
-        members.map(async ({ userID, isPresent }) => ({
-          user: await clerkClient.users.getUser(userID),
-          isPresent,
-        })),
+        members.map(async ({ userID, isPresent }) => {
+          const { id, imageUrl, username } =
+            await clerkClient.users.getUser(userID);
+          return {
+            id,
+            imageUrl,
+            username,
+            isPresent,
+          } as ClubMember;
+        }),
       );
     }),
 

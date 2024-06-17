@@ -16,7 +16,7 @@ export function MemberDetails({
       <ul className="flex h-10 flex-row">
         {members.map((m, i) => (
           <UserAvatar
-            key={m.user.id}
+            key={m.id}
             member={m}
             className={i !== 0 && "-translate-x-5"}
           />

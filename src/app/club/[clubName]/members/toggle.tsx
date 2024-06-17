@@ -1,16 +1,16 @@
 "use client";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { toast } from "sonner";
 import { Switch } from "~/components/ui/switch";
 import { api } from "~/lib/trpc/react";
+import { type ClubMember } from "~/types";
 
 export function Toggle({
-  userID,
-  initial,
+  member: { id, isPresent },
   clubName,
 }: {
-  userID: string;
-  initial: boolean;
+  member: ClubMember;
   clubName: string;
 }) {
   const { mutateAsync: setPresence } =
@@ -18,14 +18,18 @@ export function Toggle({
 
   const router = useRouter();
 
+  const [optimistic, setOptimistic] = useState(isPresent);
+
   return (
     <Switch
-      checked={initial}
-      onCheckedChange={async (isPresent) => {
+      disabled={isPresent !== optimistic}
+      checked={optimistic}
+      onCheckedChange={async (presence) => {
+        setOptimistic(!optimistic);
         toast.promise(
           setPresence({
-            userID,
-            isPresent,
+            userID: id,
+            isPresent: presence,
             clubName,
           }).then(() => router.refresh()),
           { success: "Updated", loading: "Loading...", error: "Error!" },

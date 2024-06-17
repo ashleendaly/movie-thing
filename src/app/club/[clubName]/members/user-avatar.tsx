@@ -5,10 +5,7 @@ import { cn } from "~/lib/utils/cn";
 import { type ClubMember } from "~/types";
 
 export function UserAvatar({
-  member: {
-    isPresent,
-    user: { username, imageUrl },
-  },
+  member: { isPresent, username, imageUrl },
   className,
 }: {
   member: ClubMember;
@@ -18,7 +15,7 @@ export function UserAvatar({
     <Tooltip tip={username ?? "Unnamed User"} delay={100}>
       <div
         className={cn(
-          "relative transition-all hover:z-10 hover:scale-105",
+          "relative h-10 w-10 transition-all hover:z-10 hover:scale-105",
           !isPresent && "brightness-75",
           className,
         )}

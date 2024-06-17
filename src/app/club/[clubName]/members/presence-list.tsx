@@ -1,6 +1,7 @@
+"use client";
 import { type ClubMember } from "~/types";
-import { Toggle } from "./toggle";
-import { UserAvatar } from "./user-avatar";
+import { columns } from "./columns";
+import { DataTable } from "./table";
 
 export function PresenceList({
   members,
@@ -9,18 +10,5 @@ export function PresenceList({
   members: ClubMember[];
   clubName: string;
 }) {
-  return (
-    <ul>
-      {members.map((m) => (
-        <div key={m.user.id} className="flex flex-row items-center gap-2 p-2">
-          <UserAvatar member={m} />
-          <Toggle
-            clubName={clubName}
-            initial={m.isPresent}
-            userID={m.user.id}
-          />
-        </div>
-      ))}
-    </ul>
-  );
+  return <DataTable columns={columns({ clubName })} data={members} />;
 }
