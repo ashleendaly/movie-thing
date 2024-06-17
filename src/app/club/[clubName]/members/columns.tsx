@@ -8,6 +8,7 @@ export const columns: (props: {
 }) => ColumnDef<ClubMember>[] = ({ clubName }) => [
   {
     id: "Avatar",
+    accessorKey: "username",
     header: "User",
     cell: ({ row }) => <UserAvatar member={row.original} />,
   },
