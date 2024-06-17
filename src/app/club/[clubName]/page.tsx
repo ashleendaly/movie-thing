@@ -3,8 +3,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { api } from "~/lib/trpc/server";
 import { Aggregation } from "./aggregate";
 import { ClubTitleBar } from "./club-title-bar";
-import { MemberDetails } from "./members/details";
-import { PresenceList } from "./members/presence-list";
+import { MemberInformation } from "./members";
+import { PresenceTable } from "./members/presence";
 import { Code } from "./qr-code/code";
 
 export default async function Page({
@@ -25,19 +25,24 @@ export default async function Page({
         <ScrollArea className="h-[calc(100dvh-9rem+4px)]">
           <div className="flex flex-col gap-5">
             <ClubTitleBar name={clubName} joinCode={joinCode} />
-            <MemberDetails members={members} className="hidden lg:block" />
-            <Tabs defaultValue="aggregation">
+            <MemberInformation
+              clubName={clubName}
+              members={members}
+              className="hidden lg:block"
+            />
+            <Tabs defaultValue="aggregation" className="block lg:hidden">
               <TabsList className="mb-5">
                 <TabsTrigger value="presence">Presence</TabsTrigger>
                 <TabsTrigger value="aggregation">Aggregation</TabsTrigger>
               </TabsList>
               <TabsContent value="presence">
-                <PresenceList clubName={clubName} members={members} />
+                <PresenceTable clubName={clubName} members={members} />
               </TabsContent>
               <TabsContent value="aggregation">
                 <Aggregation clubName={clubName} />
               </TabsContent>
             </Tabs>
+            <Aggregation clubName={clubName} className="hidden lg:block" />
           </div>
         </ScrollArea>
       </section>

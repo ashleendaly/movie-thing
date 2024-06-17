@@ -6,7 +6,7 @@ import { Switch } from "~/components/ui/switch";
 import { api } from "~/lib/trpc/react";
 import { type ClubMember } from "~/types";
 
-export function Toggle({
+export function PresenceToggle({
   member: { id, isPresent },
   clubName,
 }: {

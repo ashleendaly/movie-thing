@@ -1,7 +1,7 @@
 import { type ColumnDef } from "@tanstack/react-table";
 import { type ClubMember } from "~/types";
-import { UserAvatar } from "./user-avatar";
-import { Toggle } from "./toggle";
+import { UserAvatar } from "../user-avatar";
+import { PresenceToggle } from "./toggle";
 
 export const columns: (props: {
   clubName: string;
@@ -15,6 +15,8 @@ export const columns: (props: {
   {
     id: "Toggle",
     header: "Present",
-    cell: ({ row }) => <Toggle clubName={clubName} member={row.original} />,
+    cell: ({ row }) => (
+      <PresenceToggle clubName={clubName} member={row.original} />
+    ),
   },
 ];

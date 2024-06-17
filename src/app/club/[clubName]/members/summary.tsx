@@ -3,7 +3,7 @@ import { cn } from "~/lib/utils/cn";
 import { type ClubMember } from "~/types";
 import { UserAvatar } from "./user-avatar";
 
-export function MemberDetails({
+export function MemberSummary({
   members,
   className,
 }: {

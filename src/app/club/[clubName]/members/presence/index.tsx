@@ -1,9 +1,9 @@
 "use client";
 import { type ClubMember } from "~/types";
 import { columns } from "./columns";
-import { DataTable } from "./table";
+import { DataTable } from "./data-table";
 
-export function PresenceList({
+export function PresenceTable({
   members,
   clubName,
 }: {
