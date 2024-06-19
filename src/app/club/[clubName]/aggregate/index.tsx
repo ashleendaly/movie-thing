@@ -15,9 +15,14 @@ export async function Aggregation({
   });
 
   return (
-    <div className={cn("flex w-full flex-col items-center gap-7", className)}>
+    <div
+      className={cn(
+        "flex w-full flex-col items-center justify-center gap-7",
+        className,
+      )}
+    >
       <AggregateButton clubName={clubName} />
-      <ul className="flex w-full flex-col items-center gap-7 lg:grid lg:grid-cols-4 lg:place-items-center">
+      <ul className="mx-auto flex w-11/12 flex-col items-center gap-7 px-5 pb-10 lg:grid lg:grid-cols-4 lg:place-items-center">
         {recs.map((e) => (
           <MovieListing key={e.imdbID} movie={e} />
         ))}

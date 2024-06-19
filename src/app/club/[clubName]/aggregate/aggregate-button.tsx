@@ -38,7 +38,7 @@ export function AggregateButton({ clubName }: { clubName: string }) {
     <Button
       ref={containerRef}
       className={cn(
-        "sticky top-[-1px] flex w-full items-center gap-2 transition-all",
+        "sticky top-[-1px] mx-auto mb-7 flex w-full items-center gap-2 transition-all",
         stuck && "w-11/12 shadow-md shadow-secondary",
       )}
       size="lg"
