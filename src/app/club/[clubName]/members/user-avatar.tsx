@@ -16,7 +16,6 @@ export function UserAvatar({
       <div
         className={cn(
           "relative h-10 w-10 transition-all hover:z-10 hover:scale-105",
-          !isPresent && "brightness-75",
           className,
         )}
       >

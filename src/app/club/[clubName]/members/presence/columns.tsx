@@ -13,6 +13,11 @@ export const columns: (props: {
     cell: ({ row }) => <UserAvatar member={row.original} />,
   },
   {
+    id: "Username",
+    accessorKey: "username",
+    header: "Username",
+  },
+  {
     id: "Toggle",
     header: "Present",
     cell: ({ row }) => (

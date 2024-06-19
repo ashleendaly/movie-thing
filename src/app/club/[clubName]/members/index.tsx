@@ -1,20 +1,9 @@
 import { type ClassValue } from "clsx";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from "~/components/ui/dialog";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import { Dialog, DialogContent, DialogTrigger } from "~/components/ui/dialog";
 import { type ClubMember } from "~/types";
-import { MemberSummary } from "./summary";
 import { PresenceTable } from "./presence";
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-  CardContent,
-} from "~/components/ui/card";
+import { MemberSummary } from "./summary";
 
 export function MemberInformation({
   members,
@@ -31,8 +20,8 @@ export function MemberInformation({
         <MemberSummary members={members} className={className} />
       </DialogTrigger>
       <DialogContent>
-        <Card>
-          <CardHeader>
+        <Card className="border-x-thick border-y-thick border-primary px-7 py-4">
+          <CardHeader className="text-2xl text-foreground underline decoration-accent decoration-4 underline-offset-2">
             <CardTitle>Club Members</CardTitle>
           </CardHeader>
           <CardContent>
