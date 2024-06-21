@@ -11,6 +11,7 @@ import { SaveButton } from "./save-button";
 import { SortableMovieListing } from "./sortable-movie-listing";
 import { computeNewArr, sortMovies } from "./sortable-movie-utils";
 import { type SortableMovie } from "~/types";
+import { ScrollArea } from "~/components/ui/scroll-area";
 
 export function SortableMovieList({
   initialMovies,
@@ -30,7 +31,7 @@ export function SortableMovieList({
   }
 
   return (
-    <>
+    <ScrollArea className="h-[calc(100dvh-7rem)]">
       <SaveButton movies={movies} setMovies={setMovies} />
       <DndContext collisionDetection={closestCenter} onDragEnd={onDragEnd}>
         <SortableContext
@@ -38,13 +39,13 @@ export function SortableMovieList({
           items={movies.map((movie) => movie.imdbID)}
           strategy={verticalListSortingStrategy}
         >
-          <ul className="grid grid-cols-1 gap-10 p-5">
+          <ul className="grid w-full grid-cols-1 place-items-center gap-5 p-5">
             {movies.map((movie) => (
               <SortableMovieListing key={movie.imdbID} movie={movie} />
             ))}
           </ul>
         </SortableContext>
       </DndContext>
-    </>
+    </ScrollArea>
   );
 }

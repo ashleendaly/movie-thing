@@ -17,7 +17,7 @@ export function AddMovieDialog({
 }) {
   const { mutateAsync } = api.watchList.add.useMutation();
   return (
-    <Card className="grid grid-cols-2 place-items-center gap-3 border-x-thick border-y-thick border-primary px-7 py-4">
+    <Card className="grid grid-cols-2 place-items-center gap-3 px-7 py-4">
       <CardHeader className="col-span-2 text-2xl text-foreground underline decoration-accent decoration-4 underline-offset-2">
         <CardTitle>Add to Watchlist?</CardTitle>
       </CardHeader>
