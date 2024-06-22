@@ -44,6 +44,8 @@ export const memberRouter = createTRPCRouter({
         })
         .executeTakeFirstOrThrow();
 
+      await triggerClubReload(club.name);
+
       return club;
     }),
 
