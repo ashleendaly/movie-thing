@@ -25,7 +25,7 @@ export function useOMDB() {
   const { mutate: search, ...rest } = useMutation({
     mutationFn: async (searchQuery: string) => {
       const { Search: searchResult } = await fetch(
-        `http://www.omdbapi.com/?i=tt3896198&apikey=${env.NEXT_PUBLIC_OMDB_KEY}&s=${searchQuery}`,
+        `https://www.omdbapi.com/?i=tt3896198&apikey=${env.NEXT_PUBLIC_OMDB_KEY}&s=${searchQuery}`,
         { method: "GET" },
       ).then((res) => res.json() as Promise<SearchResponse>);
 
