@@ -34,7 +34,7 @@ export function AggregateButton({ clubName }: { clubName: string }) {
       <Button
         className={cn(
           "mx-auto mb-7 flex w-full items-center gap-2 transition-all",
-          stuck && "w-11/12 shadow-md shadow-secondary",
+          stuck && "w-11/12 shadow-md shadow-secondary hover:bg-accent",
         )}
         size="lg"
         variant="accent"
