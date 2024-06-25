@@ -1,5 +1,6 @@
 "use client";
 import { Check, X } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { MovieListing } from "~/components/movie-listing";
 import { Button } from "~/components/ui/button";
@@ -15,7 +16,10 @@ export function AddMovieDialog({
   movie: Movie;
   closeDialog: () => void;
 }) {
+  const router = useRouter();
+
   const { mutateAsync } = api.watchList.add.useMutation();
+
   return (
     <Card className="grid grid-cols-2 place-items-center gap-3 px-7 py-4">
       <CardHeader className="col-span-2 text-2xl text-foreground underline decoration-accent decoration-4 underline-offset-2">
@@ -32,6 +36,7 @@ export function AddMovieDialog({
         onClick={() =>
           toast.promise(
             mutateAsync({ ...movie }).then((e) => {
+              router.refresh();
               closeDialog();
               return e;
             }),
@@ -46,7 +51,7 @@ export function AddMovieDialog({
           )
         }
       >
-        <Check /> Yes
+        <Check className="h-4 w-4" /> Yes
       </Button>
       <DialogClose asChild>
         <Button
@@ -55,7 +60,7 @@ export function AddMovieDialog({
           type="button"
           size="lg"
         >
-          <X /> No
+          <X className="h-4 w-4" /> No
         </Button>
       </DialogClose>
     </Card>
